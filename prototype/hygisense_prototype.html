@@ -1,0 +1,180 @@
+<title>Hygisense Prototype</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: LGO-style two-pane morning screen — list left, detail right; stacks on phone */
+:root{
+  --bg:#f5f7f6; --panel:#ffffff; --ink:#15211d; --muted:#5b6b65; --line:#dbe3e0;
+  --accent:#1d6b57; --accent-soft:#e3f0ec;
+  --urgent:#b3261e; --urgent-soft:#fbe9e7; --high:#b05a00; --high-soft:#fdf0e1; --watch:#3d5a99; --watch-soft:#e8edf8;
+  --font-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-data:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1715; --panel:#16211e; --ink:#e4ece9; --muted:#9db0a9; --line:#2a3833;
+  --accent:#5cc1a3; --accent-soft:#1c332c;
+  --urgent:#ff8a80; --urgent-soft:#3a1d1b; --high:#f0a95a; --high-soft:#352816; --watch:#9db4ec; --watch-soft:#1d2539;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1715; --panel:#16211e; --ink:#e4ece9; --muted:#9db0a9; --line:#2a3833;
+  --accent:#5cc1a3; --accent-soft:#1c332c;
+  --urgent:#ff8a80; --urgent-soft:#3a1d1b; --high:#f0a95a; --high-soft:#352816; --watch:#9db4ec; --watch-soft:#1d2539;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:16px}
+header.top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 20px}
+h1{font-size:1.45rem;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:2px 0 0}
+.sim{font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px dashed var(--line);padding:4px 8px;border-radius:6px}
+.summary{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-weight:600;font-size:.85rem}
+.c-urgent{background:var(--urgent-soft);color:var(--urgent)} .c-high{background:var(--high-soft);color:var(--high)} .c-watch{background:var(--watch-soft);color:var(--watch)}
+.panes{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:820px){.panes{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px}
+.list{display:grid}
+.row{all:unset;cursor:pointer;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row:hover{background:var(--accent-soft)}
+.row:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.row[aria-current="true"]{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.stripe{width:8px;height:36px;border-radius:4px}
+.s-urgent{background:var(--urgent)} .s-high{background:var(--high)} .s-watch{background:var(--watch)}
+.pname{font-weight:600;min-width:0}
+.pmeta{color:var(--muted);font-size:.85rem;grid-column:2}
+.days{font-family:var(--font-data);font-variant-numeric:tabular-nums;text-align:right;grid-row:1/span 2;grid-column:3}
+.days b{font-size:1.25rem;display:block}
+.days span{color:var(--muted);font-size:.75rem}
+.detail{padding:18px;display:grid;gap:16px}
+.detail h2{margin:0;font-size:1.2rem;text-wrap:balance}
+.label{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 4px}
+.bar{position:relative;height:30px;border-radius:6px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.range{position:absolute;top:0;bottom:0;background:var(--accent-soft);border-left:2px solid var(--accent);border-right:2px solid var(--accent)}
+.point{position:absolute;top:-2px;bottom:-2px;width:3px;background:var(--ink)}
+.ticks{display:flex;justify-content:space-between;font-family:var(--font-data);font-size:.72rem;color:var(--muted);margin-top:3px}
+.quote{border-left:3px solid var(--line);padding:4px 10px;margin:0;color:var(--ink);font-style:italic}
+.src{font-size:.8rem;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{text-align:left;padding:6px 4px;border-bottom:1px solid var(--line)}
+th{font-weight:600;color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+td.n{font-family:var(--font-data);text-align:right}
+.warn{background:var(--high-soft);color:var(--high);padding:8px 10px;border-radius:6px;font-size:.88rem}
+.none{background:var(--bg);border:1px dashed var(--line);padding:8px 10px;border-radius:6px;font-size:.9rem}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button.btn{font:inherit;font-weight:600;padding:8px 14px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--panel);cursor:pointer}
+button.btn.ghost{background:transparent;color:var(--accent)}
+button.btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.draft{padding:14px 18px;display:grid;gap:10px}
+.draft h3{margin:0;font-size:1rem}
+.toast{font-size:.9rem;color:var(--accent);font-weight:600}
+.foot{font-size:.82rem;color:var(--muted)}
+.decision{border-radius:10px;padding:14px;display:grid;gap:6px}
+.d-buy{background:var(--accent-soft);border:1px solid var(--accent)} .d-watch{background:var(--watch-soft);border:1px solid var(--watch)} .d-no{background:var(--bg);border:1px solid var(--line)} .d-frozen{background:var(--high-soft);border:1px solid var(--high)}
+.decision .big{font-size:1.35rem;font-weight:700;text-wrap:balance}
+.reasons{margin:0;padding-left:18px}
+.c-buy{background:var(--accent-soft);color:var(--accent)} .c-no{background:var(--bg);color:var(--muted);border:1px solid var(--line)} .c-frozen{background:var(--high-soft);color:var(--high)}
+.s-buy{background:var(--accent)} .s-no{background:var(--line)} .s-frozen{background:var(--high)}
+.riskbar{height:10px;border-radius:5px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.riskbar i{display:block;height:100%;background:var(--urgent)}
+.muted{color:var(--muted)}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Achats à anticiper — vendredi 30 octobre, 8 h 30</h1>
+      <p class="sub">Pharmacie des Lilas · votre demande prévue × le risque de rupture chez le laboratoire</p>
+    </div>
+    <span class="sim">Prototype · données simulées</span>
+  </header>
+
+  <div class="summary" id="summary"></div>
+
+  <div class="panes">
+    <section class="panel list" id="list" aria-label="Recommandations"></section>
+    <section class="panel detail" id="detail" aria-live="polite"></section>
+  </div>
+
+  <section class="panel draft" aria-label="Brouillon de commande">
+    <h3>Brouillon de commande</h3>
+    <div id="draftBody" class="muted">Aucune ligne. Acceptez une recommandation depuis la fiche.</div>
+    <div class="actions">
+      <button class="btn" id="validate" type="button">Valider le brouillon</button>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+  </section>
+
+  <p class="foot">Hygisense ne commande jamais seul. Un achat anticipé est plafonné à 4 semaines de votre demande normale et aux quotas de l'ANSM, pour ne pas créer la pénurie qu'il prévoit.</p>
+</div>
+
+<script>
+const ITEMS=[
+ {id:"C04",name:"Quétiapine LP 300 mg comprimé",dec:"BUY",qty:50,risk:.90,days:5,lo:4,hi:6,stock:25,demand:"5 / jour",reasons:["Rupture déclarée à l'ANSM","Seulement 2 fournisseurs","Quota ANSM : 50 boîtes maximum"],quote:"Retour prévu semaine 48",ret:"Semaine 48 (23–29 nov.)",gen:[{p:"Quétiapine LP 300 mg — Lab. B",s:42,t:false}]},
+ {id:"C07",name:"Amoxicilline suspension buvable enfant",dec:"BUY",qty:168,risk:.70,days:10,lo:8,hi:30,stock:60,demand:"6 / jour (pic hivernal)",reasons:["Signal de risque ANSM","3 ruptures passées sur ce produit","Demande ×3 depuis 2 semaines"],quote:null,ret:null,gen:[{p:"Amoxicilline susp. enfant — Lab. E",s:18,t:false}]},
+ {id:"C01",name:"Amoxicilline 1 g comprimé",dec:"BUY",qty:112,risk:.70,days:10,lo:9,hi:12,stock:40,demand:"4 / jour",reasons:["Signal de risque ANSM","3 ruptures passées","Saison hivernale"],quote:null,ret:null,gen:[{p:"Amoxicilline 1 g — Lab. B",s:24,t:false}]},
+ {id:"C05",name:"Insuline glargine stylo",dec:"BUY",qty:54,risk:.60,days:15,lo:13,hi:18,stock:30,demand:"2 / jour",reasons:["Signal de risque ANSM","Aucun générique substituable"],quote:null,ret:null,gen:[]},
+ {id:"C02",name:"Amoxicilline 500 mg gélule",dec:"NO",qty:0,risk:.70,days:60,lo:52,hi:70,stock:300,demand:"5 / jour",reasons:["Risque élevé, mais votre stock couvre déjà 60 jours"],quote:null,ret:null,gen:[]},
+ {id:"C08",name:"Salbutamol inhalateur",dec:"WATCH",qty:0,risk:.40,days:10,lo:8,hi:12,stock:20,demand:"2 / jour",reasons:["1 rupture passée","Tension signalée par le laboratoire"],quote:"Tension d'approvisionnement, pas de date de retour communiquée",ret:null,gen:[{p:"Salbutamol inhalateur — Lab. F",s:9,t:false}]}
+];
+const DL={BUY:"Racheter",WATCH:"À surveiller",NO:"Ne pas racheter",FROZEN:"Gelé"};
+const DC={BUY:"buy",WATCH:"watch",NO:"no",FROZEN:"frozen"};
+let current=ITEMS[0].id; const draft=new Map();
+const $=s=>document.querySelector(s);
+function esc(t){return String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function renderSummary(){
+  const n=k=>ITEMS.filter(i=>i.dec===k).length;
+  $("#summary").innerHTML=`<span class="chip c-buy">${n("BUY")} à racheter maintenant</span><span class="chip c-watch">${n("WATCH")} à surveiller</span><span class="chip c-no">${n("NO")} risque couvert par votre stock</span><span class="chip muted">1 240 produits sans risque, non affichés</span>`;
+}
+function renderList(){
+  $("#list").innerHTML=ITEMS.map(i=>`
+   <button class="row" type="button" data-id="${i.id}" aria-current="${i.id===current}">
+     <span class="stripe s-${DC[i.dec]}" aria-hidden="true"></span>
+     <span class="pname">${esc(i.name)}</span>
+     <span class="days"><b>${i.dec==="BUY"?"+"+i.qty:"—"}</b><span>${i.dec==="BUY"?"boîtes":DL[i.dec]}</span></span>
+     <span class="pmeta">Risque ${Math.round(i.risk*100)} % · stock ${i.stock} · ${i.days} j restants</span>
+   </button>`).join("");
+  document.querySelectorAll(".row").forEach(b=>b.addEventListener("click",()=>{current=b.dataset.id;renderList();renderDetail();}));
+}
+function renderDetail(){
+  const i=ITEMS.find(x=>x.id===current), max=72, pct=v=>Math.min(100,v/max*100);
+  const head=i.dec==="BUY"?`Racheter ${i.qty} boîtes maintenant`:i.dec==="WATCH"?"Ne rien acheter pour l'instant, à surveiller":"Ne pas racheter : votre stock couvre le risque";
+  const gens=i.gen.length?`<table><thead><tr><th>Substituable (même groupe)</th><th style="text-align:right">Stock</th></tr></thead><tbody>${i.gen.map(g=>`<tr><td>${esc(g.p)}</td><td class="n">${g.s}</td></tr>`).join("")}</tbody></table>`
+   :`<div class="none">Aucun générique substituable dans le répertoire officiel. Hygisense ne propose pas d'autre molécule.</div>`;
+  $("#detail").innerHTML=`
+   <div><p class="label">${esc(i.name)}</p></div>
+   <div class="decision d-${DC[i.dec]}">
+     <span class="big">${head}</span>
+     <ul class="reasons">${i.reasons.map(r=>`<li>${esc(r)}</li>`).join("")}</ul>
+   </div>
+   <div>
+     <p class="label">Risque de rupture chez le laboratoire dans les 8 semaines — ${Math.round(i.risk*100)} %</p>
+     <div class="riskbar"><i style="width:${i.risk*100}%"></i></div>
+   </div>
+   <div>
+     <p class="label">Votre stock dure ${i.days} j (fourchette ${i.lo}–${i.hi} j) · demande prévue ${esc(i.demand)}</p>
+     <div class="bar" role="img" aria-label="Estimation ${i.days} jours">
+       <div class="range" style="left:${pct(i.lo)}%;width:${Math.max(1,pct(i.hi)-pct(i.lo))}%"></div>
+       <div class="point" style="left:calc(${pct(i.days)}% - 1px)"></div>
+     </div>
+     <div class="ticks"><span>0</span><span>14 j</span><span>28 j</span><span>42 j</span><span>70 j</span></div>
+     ${i.dec==="BUY"?`<p class="src">Avec ${i.qty} boîtes de plus, vous tenez environ ${Math.round((i.stock+i.qty)/(i.stock/i.days))} jours. Plafond : 4 semaines de demande en plus, et les quotas ANSM.</p>`:""}
+   </div>
+   ${i.quote||i.ret?`<div><p class="label">Date de retour</p>${i.quote?`<blockquote class="quote">« ${esc(i.quote)} »</blockquote>`:""}<p style="margin:6px 0 0">${i.ret?`<b>${esc(i.ret)}</b> <span class="src">(lue dans l'avis, à vérifier)</span>`:'<span class="muted">Non communiquée.</span>'}</p></div>`:""}
+   <div><p class="label">Si la rupture arrive quand même</p>${gens}</div>
+   <div class="actions">
+     ${i.dec==="BUY"?`<button class="btn" type="button" id="add">Ajouter ${i.qty} boîtes au brouillon</button><button class="btn ghost" type="button" id="refuse">Refuser</button>`:`<button class="btn ghost" type="button" id="refuse">Ne plus suivre ce produit</button>`}
+   </div>`;
+  const add=$("#add"); if(add) add.addEventListener("click",()=>{draft.set(i.id,`${i.name} — ${i.qty} boîtes`);renderDraft();$("#toast").textContent=`Ajouté au brouillon : ${i.qty} × ${i.name}`;});
+  $("#refuse").addEventListener("click",()=>{$("#toast").textContent=`Noté. Prototype : votre refus servirait à mesurer le taux d'acceptation.`;});
+}
+function renderDraft(){
+  $("#draftBody").innerHTML=draft.size?`<ul style="margin:0;padding-left:18px">${[...draft.values()].map(n=>`<li>${esc(n)}</li>`).join("")}</ul>`:'Aucune ligne. Acceptez une recommandation depuis la fiche.';
+}
+$("#validate").addEventListener("click",()=>{
+  $("#toast").textContent=draft.size?`Brouillon validé (${draft.size} ligne${draft.size>1?"s":""}). Prototype : rien n'est envoyé au grossiste.`:"Le brouillon est vide.";
+});
+renderSummary();renderList();renderDetail();renderDraft();
+</script>
