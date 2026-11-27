@@ -2,20 +2,32 @@
 
 Team **TYN** — Tom, Yannick, Nissrine · Albert School · Data & AI Product (MSA-DAT07-04), 2026–27
 
-**In one sentence:** every morning, for every product, Hygisense forecasts when the pharmacy's stock will run out (ML on demand) and how likely the lab is to go short in the next 8 weeks (ML on public data), and recommends **buying N boxes ahead now, or not** — the pharmacist validates every order.
+**In one sentence:** every morning, Hygisense checks the ANSM shortage declarations against the pharmacy's own stock and sales and recommends **buying N boxes ahead now — while the wholesaler can still deliver — or not**. The pharmacist validates every line; Hygisense never sends an order.
 
-**Decision so far:** conditional go — launch only if a groupement pilot shows ≥ 15 % adoption and the backtest shows Hygisense says "buy ahead" in time for ≥ 25 % of past shortages (see `02_sizing.xlsx`).
+**Decision:** conditional go → **pilot with one groupement from 1 Feb 2027** (08_launch_memo.md).
+**Evaluation v0** (real ANSM, FDA and Sentinelles data, 2026; simulated pharmacies): **63.5 %** of shelf-emptying shortages anticipated at the ANSM alert vs a 25 % criterion; **28 %** of the next 8 weeks' declarations seen coming *before* any alert by the vigilance index (top 10 % of products); 0 buys above the cap; 20/20 guardrail cases; epidemic forecast 9–11 % better than the baselines (evals/report_v0.md).
 
-| Session | File | Status |
-|---|---|---|
-| S1 Diagnosis | `01_problem_statement.md` · `governance.md` | done |
-| S2 Sizing | `02_sizing.xlsx` · `02_investment_memo.md` | done |
-| S3 MVP design | `03_product_brief.md` (v1) · `03_ai_lean_canvas.md` · `03_user_research.md` · `03_prototype_link.md` · `spec.md` · `evals/cases_v0.csv` | v1 done — **user interviews and brief v2 to do** |
-| S4 Build & decode | `/prototype` (Streamlit) · `evals/report_v0.md` · `04_architecture.md` | to do |
-| S5 Metrics | `05_metrics.md` · eval-set v1 | to do |
-| S6 Experiments | `06_ab_protocol.md` | to do |
-| S7 Operation | `07_operations.md` | to do |
-| S8 Launch | `08_launch_memo.md` · tag v1.0 | to do |
+## Run it
 
-**Data:** public ANSM and generic-register data; pharmacy stock is **simulated**. No patient data is ever processed (see `governance.md`).
+```bash
+pip install -r requirements.txt
+python run_eval.py              # ~1 min: decision cases, risk model, backtest, rebuilds the demo
+```
+Then open `prototype/app.html` (double-click): the pharmacist's app — order (read-only, then edit), vigilance, reports, settings, method.
+
+## Deliverables
+
+| Session | File |
+|---|---|
+| S1 Diagnosis | `01_problem_statement.md` · `governance.md` |
+| S2 Sizing | `02_sizing.xlsx` · `02_investment_memo.md` |
+| S3 MVP design | `03_product_brief.md` (final v2) · `03_ai_lean_canvas.md` · `03_user_research.md` · `03_prototype_link.md` · `spec.md` (v2) |
+| S4 Build & decode | `hygisense/` · `run_eval.py` · `prototype/app.html` · `evals/report_v0.md` · `04_architecture.md` |
+| S5 Metrics | `05_metrics.md` · `evals/README.md` |
+| S6–S7 Experiments & operations | `06_07_experiments_operations.md` |
+| S8 Launch | `08_launch_memo.md` · tag `v1.0` |
+
+**Data:** the official *Base de données publique des médicaments* (ANSM, HAS, UNCAM — files of 19 Nov 2026, Licence Ouverte), openFDA drug shortages, Réseau Sentinelles; see `data/README.md`. The pharmacy's stock and sales are **simulated**. No patient data is ever processed (`governance.md`).
 **Company:** Hygisense is a fictional start-up that sells the product of the same name to pharmacies (€99/month).
+
+**How the ML works, in plain words:** [`HOW_THE_ML_WORKS.md`](HOW_THE_ML_WORKS.md).

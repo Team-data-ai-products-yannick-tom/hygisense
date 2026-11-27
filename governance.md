@@ -24,7 +24,7 @@
 ## 03 — Who is accountable — where is the human?
 
 - **The pharmacist** validates every order and every substitution. The system never sends an order on its own (level L2 on ordering).
-- **Named owner on our side:** the product owner (to name within the team) for alert quality and model drift.
+- **Named owner on our side:** Yannick (product manager) for the quality of the recommendations and model drift; Nissrine (Head of Operations) for the switch and incidents.
 - **Override switch:** the pharmacist can mute a product, an alert type, or the whole tool; the LGO keeps working as before.
 
 ## 04 — What must it never do?
@@ -95,3 +95,31 @@ The governance line from S2: the most expensive error, **a non-substitutable pro
 | 5. List substitutable generics | Rule on the official register (rung 1) | **L1** — suggestion only; the pharmacist decides | Highest cost of error (legal / health) |
 | 6. Draft the reorder | Automation | **L2** — the pharmacist validates every line | Money and stock are at stake |
 | 7. Send the order | **Pharmacist only** | — | The way back to a person is the default |
+
+---
+
+## Session 4 — Human checkpoints and the override switch
+
+- **⊘ Approval:** every BUY line is ticked by the pharmacist, who copies the draft into their own software. Hygisense never sends an order.
+- **⊘ Abstention:** no BUY line when the wholesaler is already short ("too late"), when a product is frozen network-wide, or when the data is stale (BDPM > 35 days, export > 1 day).
+- **⏻ Override switch:** ON (L2) / SUGGEST-ONLY (L1) / OFF, per pharmacy and network-wide. **Owner: Nissrine (Head of Operations)**; Tom (engineer on call) at night. Each pharmacist can switch off their own pharmacy at any time.
+- **[S4 finding]** The logistic regression v1 did not beat a simple flag (MITM); the v2 vigilance index (relative risks incl. US shortages from openFDA) does (AUC 0.76) but stays too imprecise to spend cash on. It ranks the WATCH list and **never triggers a purchase**. Only an ANSM declaration on the exact product can (a rule, rung 1). External sources (openFDA, Réseau Sentinelles) are public, aggregated data: no personal data.
+
+## Session 5 — Harm threshold by segment
+
+"If useless buy-aheads exceed **60 %** for two consecutive months in a segment (pharmacy size, tension vs rupture), Hygisense drops to **SUGGEST-ONLY** on that segment until the cause is explained. Owner: **Nissrine**. Reviewed monthly with Yannick."
+
+"If recommended buy-aheads on one product across our pharmacies exceed **25 %** of their normal 2-week demand in one day, the product is **frozen network-wide** (no BUY line) and the groupement is told. Owner: **Nissrine**." This is the guardrail against creating the shortage we predict.
+
+## Sessions 6 + 7 — Experiments, switch, traces
+
+- **Who signs an experiment on real pharmacies:** the pilot groupement's pharmacist referent, on Yannick's protocol (06_07 §1–§2). Pharmacies are told they are in a pilot and that half of the declarations will show no line. No patient is ever randomised: the control is today's practice (DP-Ruptures).
+- **Who can press the switch:** Nissrine; Tom at night; each pharmacist for their own pharmacy. Tested on the prototype on 19 Nov 2026; next test in staging during the shadow weeks, then quarterly.
+- **Where the trace lives:** one OpenTelemetry trace per pharmacy per night (06_07 §4), in Grafana Cloud (EU region), kept **12 months**, then deleted. It holds product codes, quantities and decisions, and **no patient data**. Tom keeps it; Yannick answers a pharmacy, a groupement or ANSM.
+
+## Network effects — we must not create the shortage we predict
+More pharmacies on Hygisense must mean better-placed buying, not more buying. Rules: one network cap per product (25 % of the network's normal 2-week demand, split pro rata to each pharmacy's normal sales); epidemic boosts only where the local epidemic rises; sales shared only aggregated (≥ 5 pharmacies per zone, no patient field, no pharmacy sees another's figures — also a competition-law point); the service rate of pharmacies outside our network is a guardrail, not a nice-to-have. Owner: **Nissrine** (Head of Operations). Reviewed monthly with the PM.
+
+## Session 8 — Who signs the launch
+
+The pilot launch (08_launch_memo.md) is signed by **Yannick (PM) and Nissrine (Head of Operations)** for Hygisense, and by **the groupement's pharmacist referent** for the pilot pharmacies.

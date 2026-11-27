@@ -1,6 +1,6 @@
-# 03 — Product brief · Hygisense (v1)
+# 03 — Product brief · Hygisense (final, v2)
 
-> Team TYN · v1 written from 01 and 02 · **v2 after the user tests** (section 10). Users change the design, not the threshold.
+> Team TYN · v1 written from 01 and 02 (S3) · **v2 on 19 Nov 2026, after the S4 evaluation** (section 10). No user tests were run (see 03_user_research.md): v2 changes come from the evaluation on real ANSM data, not from users.
 
 ## 1. Problem, user, do-nothing
 
@@ -58,8 +58,9 @@ Public: ANSM shortage history (labels for the risk model), generic register, BDP
 
 | Part | Rung | Why |
 |---|---|---|
-| Demand forecast → stock-out date | 2 · classical ML (moving average baseline → gradient boosting / seasonal model if it fails) | Demand varies with season and epidemics; must give a range |
-| Shortage risk in the next 4–8 weeks | 2 · classical ML (logistic regression baseline → gradient boosting) | Tabular features: past shortages, number of suppliers, current ANSM status, season; explainable |
+| Demand forecast → stock-out date | 2 · classical — **v2: 56-day mean** (the seasonal version did worse: WAPE 22.1 % vs 19.7 %) | Must give a range |
+| Shortage risk in the next 8 weeks | 2 · **v2: vigilance index** (relative risks) — WATCH only | MITM, single lab, same molecule short, US shortage (FDA); AUC 0.76 on 2026 |
+| **v2 — ANSM declaration on the product, still orderable** | 1 · rule | Wholesalers must still deliver for 2 weeks (art. R5124-59 CSP); this rule makes all the anticipated shortages |
 | Buy ahead or not, how many | 1 · rule | `buy if risk ≥ threshold and days_left < horizon`; quantity = demand until expected return, **capped at 4 weeks** and at any quota |
 | Generics fallback | 1 · rule | The official register decides |
 | Return date from notices (COULD) | 3 · LLM API + source quote | Free text |
@@ -70,11 +71,13 @@ A **morning screen** (web app) fed by a daily stock export from the pharmacy's o
 
 ## 8. Success criterion (one sentence)
 
-**"By Session 5, on a backtest of past shortages, Hygisense recommends buying ahead at least 7 days before the shelf would have been empty for at least 25 % of them — and never recommends more than the cap."**
+**"By 26 November 2026, on a backtest of the 2026 ANSM declarations, Hygisense recommends buying ahead at least 7 days before the shelf would have been empty — while the wholesaler can still deliver — for at least 25 % of them, and never recommends more than the cap."**
+
+**Result (evals/report_v0.md): 63.5 % (33 of 52) at the alert, 0 above the cap, 20/20 cases — pass. Before the alert, the vigilance index holds 28 % of the next 8 weeks' declarations in its top 10 %.**
 
 | Metric | Threshold | Guardrail | Data | Date |
 |---|---|---|---|---|
-| Anticipation rate | **≥ 25 %** — the S2 product gate (21 %) with a margin | no buy-ahead above 4 weeks of normal demand · counter-metric: share of buy-aheads with no shortage after | ANSM history (time split) + simulated stock; evals/cases_v0.csv | Session 5 |
+| Anticipation rate | **≥ 25 %** — the S2 product gate (21 %) with a margin | no buy-ahead above 4 weeks of normal demand · counter-metric: useless buy-aheads (29 % in v0) | real ANSM declarations (BDPM, time split) + simulated pharmacy; evals/cases_v0.csv | 26 Nov 2026 |
 
 ## 9. Risks and rollback trigger
 
@@ -85,10 +88,17 @@ A **morning screen** (web app) fed by a daily stock export from the pharmacy's o
 | False reassurance | A stock-out on a product scored "low risk" | Review the case; DP-Ruptures stays the reference |
 | Wrong generic shown | Any single case | Generics fallback switched off |
 
-## 10. v2 — what the users changed (to fill after the tests, with evidence)
+## 10. v2 — what changed, and why
 
-| Change | Evidence ("x of 5 users…") |
+**No user tests were run.** The team chose to rely on public data and on the PGEU survey of pharmacists rather than take pharmacists' time (03_user_research.md). The changes below come from the **evaluation on real ANSM data**; users will be measured in the pilot (lines ticked, lines refused).
+
+| Change | Evidence |
 |---|---|
-| *to fill* | *to fill* |
+| The **ANSM declaration** becomes the trigger of a purchase (rule); a **vigilance index** with the FDA signal ranks every product before the alert | logistic regression AUC 0.68 → index 0.76; rule anticipates 63.5 % (evals/report_v0.md) |
+| **Epidemic forecast** (Sentinelles) raises the reorder of respiratory products | forecast error −9 to −11 % vs baselines |
+| New decision **TOO LATE** when the wholesaler is already short, shown apart from BUY | 108 products already short on the demo morning; 2 of 8 misses |
+| Demand forecast = **56-day mean** (the seasonal version is dropped) | WAPE 19.7 % vs 22.1 % |
+| Next: 2 boxes minimum on a declaration for slow movers | all 19 misses are slow movers (≤ 2 boxes a month) |
+| The prototype becomes the pharmacist's app `prototype/app.html` (order read-only → edit, editable quantities, add any product incl. parapharmacy, preferred generic lab, vigilance, automatic report, settings) | team review of the S3 mock-up |
 
 **What the users could not decide:** the 25 % threshold (S2 product gate), the models (backtest), the cap (governance).

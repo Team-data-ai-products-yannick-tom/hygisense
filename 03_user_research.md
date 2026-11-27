@@ -1,6 +1,10 @@
 # 03 — User research · Hygisense
 
-> Status: **guide ready, interviews not done yet.** Target: 3 conversations of 20 minutes (Mom Test rules), then 2 users try one task on the prototype. Do not fill the results with guesses: an empty row is more honest than an invented quote.
+> Status (26 Nov 2026): **no interviews were run — a team decision.** Pharmacists already lose more than 10 h a week on shortages (PGEU survey), and the team chose not to take their time for a course project. The guide below stays ready for the pilot. **We did not invent any result.**
+>
+> **What we use instead (secondary sources, cited in 01_problem_statement.md):** the PGEU 2024-25 survey of European community pharmacists (time spent, +4 h vs 2022), the Ordre des pharmaciens figures on DP-Ruptures, and the DREES/ANSM study on shortages declared by manufacturers (March 2025).
+>
+> **What this leaves untested — our riskiest user assumptions:** (1) pharmacists tick BUY lines, (2) they accept some useless buy-aheads, (3) the screen fits their morning. The pilot measures all three in shadow mode and in the A/B (lines ticked, refused, edited — 06_07 §1).
 
 ## Who to ask
 

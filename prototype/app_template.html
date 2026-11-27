@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hygisense — Pharmacie des Lilas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#f4f6f5;--panel:#fff;--ink:#14201c;--muted:#5d6c67;--faint:#8a9893;--line:#e1e7e4;--line2:#eef2f0;
+--accent:#1d6b57;--accent-2:#258a71;--accent-soft:#e4f1ec;--red:#c0362c;--red-soft:#fcebe9;--amber:#a6600a;--amber-soft:#fdf2e2;
+--blue:#2f5aa8;--blue-soft:#e9effa;--shadow:0 1px 2px rgba(16,24,20,.05),0 2px 8px rgba(16,24,20,.04);--font:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1513;--panel:#151f1c;--ink:#e3ebe8;--muted:#9fb1ab;--faint:#74857f;--line:#26332f;--line2:#1d2926;
+--accent:#56c0a0;--accent-2:#6fd0b2;--accent-soft:#16302a;--red:#ff8b80;--red-soft:#3a1c1a;--amber:#f0ae5c;--amber-soft:#33260f;--blue:#9cb8f0;--blue-soft:#1c2740;color-scheme:dark}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:14.5px;line-height:1.45}
+button,input,select{font:inherit;color:inherit}
+.app{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:100vh}
+@media (max-width:1180px){.app{grid-template-columns:minmax(0,1fr)}.side{position:static!important;height:auto!important;flex-direction:row!important;flex-wrap:wrap;gap:4px!important}.side .foot{display:none!important}}
+.side{position:sticky;top:0;height:100vh;background:var(--panel);border-right:1px solid var(--line);padding:18px 14px;display:flex;flex-direction:column;gap:6px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.15rem;padding:4px 8px 14px}
+.logo i{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:#fff;font-style:normal;font-size:.95rem}
+.nav{all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;color:var(--muted);font-weight:500}
+.nav:hover{background:var(--line2);color:var(--ink)}
+.nav[aria-current="page"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav .n{margin-left:auto;background:var(--red);color:#fff;border-radius:999px;font-size:.72rem;padding:1px 7px;font-weight:700}
+.side .foot{margin-top:auto;font-size:.78rem;color:var(--faint);padding:8px;border-top:1px solid var(--line);display:grid;gap:4px}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#2fb67c;margin-right:6px}
+main{padding:22px 28px 60px;max-width:1180px;width:100%}
+@media (max-width:860px){main{padding:16px}}
+.head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:16px}
+h1{font-size:1.45rem;margin:0;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:4px 0 0;max-width:720px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--panel);padding:8px 14px;border-radius:9px;font-weight:600;cursor:pointer;box-shadow:var(--shadow)}
+.btn:hover{border-color:var(--faint)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{background:var(--accent-2)}
+.btn.ghost{background:transparent;box-shadow:none}
+.btn.danger{color:var(--red)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:.8rem;font-weight:600}
+.p-read{background:var(--line2);color:var(--muted)} .p-edit{background:var(--amber-soft);color:var(--amber)} .p-sent{background:var(--accent-soft);color:var(--accent)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:14px 0 18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+.kpi{padding:14px 16px}.kpi .l{font-size:.78rem;color:var(--muted);font-weight:500}.kpi .v{font-size:1.5rem;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums}
+.kpi .d{font-size:.78rem;color:var(--faint)} .up{color:var(--accent)} .down{color:var(--red)}
+.sec{margin-top:18px}
+.sec-h{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.sec-h h2{font-size:1rem;margin:0}.sec-h .why{color:var(--muted);font-size:.85rem}
+.sec-h .count{margin-left:auto;color:var(--muted);font-size:.85rem}
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.74rem;font-weight:600;white-space:nowrap}
+.t-red{background:var(--red-soft);color:var(--red)} .t-amber{background:var(--amber-soft);color:var(--amber)} .t-blue{background:var(--blue-soft);color:var(--blue)}
+.t-green{background:var(--accent-soft);color:var(--accent)} .t-grey{background:var(--line2);color:var(--muted)}
+table{width:100%;border-collapse:collapse}
+.card.sec,.card{overflow-x:auto}
+td .pn{min-width:150px}
+@media (max-width:1180px){.side{padding:10px 14px!important;align-items:center}.side .logo{margin:0 12px 0 0!important;padding:4px 8px!important}.side{border-right:0!important;border-bottom:1px solid var(--line)}.side .nav{width:auto!important;padding:8px 12px!important}}
+@media (max-width:760px){th,td{padding:8px 6px!important}.sec-h{flex-wrap:wrap}.sec-h .why{flex-basis:100%}}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--faint);font-weight:600;text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+td{padding:11px 12px;border-bottom:1px solid var(--line2);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.pn{font-weight:600}.pf{color:var(--muted);font-size:.8rem}
+.why2{display:grid;gap:3px}
+.small{font-size:.8rem;color:var(--muted)}
+a{color:var(--accent)}
+.qty{font-weight:700;font-size:1.05rem}
+.step{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--panel)}
+.step button{border:0;background:var(--line2);width:30px;height:32px;cursor:pointer;font-weight:700}
+.step input{width:62px;border:0;text-align:center;height:32px;font-weight:700;background:transparent}
+.warn{color:var(--red);font-size:.75rem;font-weight:600;margin-top:4px}
+.mod{color:var(--amber);font-size:.75rem;font-weight:600}
+select.sel{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--panel);max-width:230px}
+.x{border:0;background:transparent;cursor:pointer;color:var(--faint);font-size:1.1rem}
+.x:hover{color:var(--red)}
+.collapse{all:unset;cursor:pointer;color:var(--accent);font-weight:600;font-size:.85rem}
+.search{position:relative;padding:12px 16px;border-bottom:1px solid var(--line)}
+.search input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.results{position:absolute;left:16px;right:16px;top:58px;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:5;max-height:330px;overflow:auto}
+.res{display:flex;gap:10px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--line2);cursor:pointer}
+.res:hover{background:var(--accent-soft)}
+.empty{padding:18px 16px;color:var(--muted)}
+.banner{padding:12px 16px;border-radius:12px;margin:10px 0;display:flex;gap:10px;align-items:center}
+.b-edit{background:var(--amber-soft);color:var(--amber)} .b-sent{background:var(--accent-soft);color:var(--accent)}
+.filters{display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px;border-bottom:1px solid var(--line);align-items:center}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:.84rem;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.filters input{margin-left:auto;padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);min-width:220px}
+.bar{height:8px;border-radius:4px;background:var(--line2);overflow:hidden;width:110px}
+.bar i{display:block;height:100%;border-radius:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:900px){.grid2{grid-template-columns:1fr}}
+.chart{padding:14px 16px}
+.chart h3{margin:0;font-size:.95rem}.chart .big{font-size:1.25rem;font-weight:700}
+svg text{fill:var(--faint);font-size:10px;font-family:var(--font)}
+.modal-bg{position:fixed;inset:0;background:rgba(10,18,15,.45);display:grid;place-items:center;z-index:20;padding:16px}
+.modal{background:var(--panel);border-radius:14px;max-width:640px;width:100%;max-height:88vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.modal header{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center}
+.modal header h3{margin:0;font-size:1.05rem}
+.modal .body{padding:16px 18px;display:grid;gap:12px}
+.modal footer{padding:14px 18px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end}
+.mail{border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--bg);font-size:.88rem}
+.mail h4{margin:10px 0 4px;font-size:.9rem}
+.form{display:grid;gap:14px}
+.fs{padding:16px}
+.fs h3{margin:0 0 10px;font-size:.95rem}
+.fg{display:grid;grid-template-columns:240px 1fr;gap:10px 16px;align-items:center}
+@media (max-width:700px){.fg{grid-template-columns:1fr}}
+.fg label{color:var(--muted);font-size:.88rem}
+.fg input,.fg select{padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);max-width:340px}
+.hint{font-size:.78rem;color:var(--faint);grid-column:2}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:10px 16px;border-radius:10px;font-weight:600;z-index:30;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.hide{display:none!important}
+.ok{color:var(--accent);font-weight:700}.ko{color:var(--red);font-weight:700}
+.note{font-size:.8rem;color:var(--faint);margin-top:14px}
+.chips{display:flex;flex-wrap:wrap;gap:4px;max-width:420px}.nowrap{white-space:nowrap}
+
+.k6{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.kpi.click{cursor:pointer}.kpi.click:hover{border-color:var(--accent)}
+.acc{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);margin-top:12px;overflow:hidden}
+.acc-red{border-left:5px solid var(--red)}.acc-blue{border-left:5px solid var(--blue)}.acc-grey{border-left:5px solid var(--line)}
+.acc-h{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer}
+.acc-h:hover{background:var(--line2)}
+.acc-h .att{display:grid;gap:2px;flex:1}.acc-h .att b{font-size:1rem}
+.acc-h .asum{color:var(--ink);font-weight:600;font-size:.9rem;white-space:nowrap}
+.aic{font-size:1.2rem}.chev{color:var(--muted);width:14px;display:inline-block}
+.acc-b{border-top:1px solid var(--line)}
+.ln{border-bottom:1px solid var(--line2)}.ln:last-child{border-bottom:0}.ln.off .lp,.ln.off .lk{opacity:.75}
+.lh{display:grid;grid-template-columns:18px minmax(180px,2.2fr) minmax(150px,1.2fr) 110px 150px 80px 130px;gap:10px;align-items:center;padding:10px 16px;cursor:pointer}
+.lh:hover{background:var(--line2)}.ln.open .lh{background:var(--accent-soft)}
+.lh .num{text-align:right}.la{text-align:right}
+@media (max-width:900px){.lh{grid-template-columns:18px 1fr auto;}.lh .ls,.lh .lk,.lh .lv{display:none}}
+.detail{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;padding:4px 16px 16px 44px;background:var(--accent-soft)}
+.dbox{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.85rem}
+.dbox .dt{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--faint);font-weight:700;margin-bottom:6px}
+.dbox p{margin:0 0 5px}
+svg .tl{font-size:10.5px;fill:var(--muted)} svg .tv{font-size:15px;font-weight:700}
+.filters input.bigsearch{min-width:340px;padding:10px 12px;font-size:.95rem}
+</style></head><body>
+<div class="app">
+<aside class="side">
+  <div class="logo"><i>H</i>Hygisense</div>
+  <button class="nav" data-v="tableau" aria-current="page">📊 Tableau de bord</button>
+  <button class="nav" data-v="commande">🧾 Commande du jour <span class="n" id="nAnt"></span></button>
+  <button class="nav" data-v="rapports">📈 Rapports</button>
+  <button class="nav" data-v="parametres">⚙️ Paramètres</button>
+  <button class="nav" data-v="methode">🔬 Méthode</button>
+  <div class="foot">
+    <div><b id="phName"></b></div>
+    <div><span class="dot"></span>Logiciel de la pharmacie : synchro à <span id="fSync"></span></div>
+    <div><span class="dot"></span>ANSM, FDA, Sentinelles : 2×/jour</div>
+    <div>Démo : vraies données ANSM, FDA, Sentinelles · stock et ventes simulés</div>
+  </div>
+</aside>
+<main>
+<section id="v-tableau"></section>
+<section id="v-commande" class="hide"></section>
+<section id="v-rapports" class="hide"></section>
+<section id="v-parametres" class="hide"></section>
+<section id="v-methode" class="hide"></section>
+</main>
+</div>
+<div id="modal"></div>
+<div id="toast" class="toast hide"></div>
+<script>
+const D=/*DATA*/null, R=D.R;
+const $=s=>document.querySelector(s);
+const esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const n0=x=>x==null?"–":Number(x).toLocaleString("fr-FR",{maximumFractionDigits:0});
+const n1=x=>x==null?"–":Number(x).toLocaleString("fr-FR",{maximumFractionDigits:1});
+const eur=x=>x==null?"–":Number(x).toLocaleString("fr-FR",{style:"currency",currency:"EUR",maximumFractionDigits:0});
+const pc=x=>Math.round(x*100)+" %";
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.remove("hide");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.add("hide"),3200)}
+// ---------- settings
+const DEF={pharmacy:D.pharmacy,email:"titulaire@pharmacie-des-lilas.fr",freq:"hebdo",day:"lundi",hour:"07:00",sync:"02:00",ansm:"2",cover:14,cap:28,grossiste:"OCP Répartition",lab:"BIOGARAN",remise:40,vigil:10,mode:"lecture",epi:true};
+let S={...DEF};try{Object.assign(S,JSON.parse(localStorage.getItem("hyg_settings")||"{}"))}catch(e){}
+function saveS(){try{localStorage.setItem("hyg_settings",JSON.stringify(S))}catch(e){}}
+// ---------- order state
+const CAT=D.catalogue.map(c=>({id:c[0],name:c[1],form:c[2],holder:c[3],price:c[4],stock:c[5],demand:c[6],kind:c[0].startsWith("PARA")?"para":"med"}));
+const CATI=Object.fromEntries(CAT.map(c=>[c.id,c]));
+let mode=S.mode==="edition"?"edition":"lecture", sent=null, snap=null;
+const L=[];   // lines
+D.anticip.forEach(a=>L.push({...a,sec:"anticip",sug:a.qty,q:a.qty,sup:"grossiste",on:true}));
+D.reassort.forEach(a=>L.push({...a,sec:"reassort",sug:a.qty,q:a.qty,sup:"grossiste",on:true}));
+let showRe=false, view="tableau";
+D.prev.forEach(p=>L.push({...p,sec:"prev",sug:p.qty,q:p.qty,sup:"grossiste",on:false,cap:p.cap||Math.ceil((p.demand||0)*28)}));
+const openS=new Set(), openR=new Set();
+function prefAlt(l){return (l.alts||[]).find(a=>a.holder.toUpperCase().includes(S.lab))}
+function supLabel(l){if(l.sup==="grossiste")return S.grossiste;const a=(l.alts||[]).find(x=>x.id===l.sup);return a?`Direct labo — ${a.holder}`:S.grossiste}
+function lineVal(l){return (l.price||0)*l.q}
+// ---------- navigation
+document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>go(b.dataset.v));
+function go(v){view=v;try{window.scrollTo(0,0)}catch(e){}document.querySelectorAll(".nav").forEach(b=>b.setAttribute("aria-current",b.dataset.v===v?"page":"false"));
+ ["tableau","commande","rapports","parametres","methode"].forEach(k=>$("#v-"+k).classList.toggle("hide",k!==v));render()}
+// ---------- COMMANDE
+function cover(l){if(!l.demand||l.demand<=0||!l.q)return "";const d=l.q/l.demand;
+  return `<div class="pf">${d<7?"≈ "+Math.max(1,Math.round(d))+" j":"≈ "+n1(d/7)+" sem."} de ventes</div>`}
+function qtyCell(l,i){
+  if(mode!=="edition")return `<span class="qty">${n0(l.q)}</span>${cover(l)}${l.q!==l.sug?`<div class="mod">modifié (suggéré ${n0(l.sug)})</div>`:""}`;
+  const over=l.cap&&l.q>l.cap;
+  return `<div class="step"><button data-dq="${i}" data-s="-1" aria-label="moins">−</button><input data-q="${i}" type="number" min="0" value="${l.q}"><button data-dq="${i}" data-s="1" aria-label="plus">+</button></div>${cover(l)}
+  ${over?`<div class="warn">Au-delà du plafond anti-accaparement (${l.cap})</div>`:l.q!==l.sug?`<div class="mod">suggéré : ${n0(l.sug)}</div>`:""}`}
+function supCell(l,i){
+  if(mode!=="edition")return `<span class="small">${esc(supLabel(l))}</span>`;
+  const p=prefAlt(l);
+  const opts=[`<option value="grossiste" ${l.sup==="grossiste"?"selected":""}>${esc(S.grossiste)}</option>`].concat((l.alts||[]).map(a=>`<option value="${a.id}" ${l.sup===a.id?"selected":""}>${a===p?"★ ":""}Direct labo — ${esc(a.holder)}</option>`));
+  return `<select class="sel" data-sup="${i}">${opts.join("")}</select>${p&&l.sup!==p.id?`<div class="small">★ votre labo préféré propose ce générique</div>`:""}`}
+// ---------- COMMANDE : sections and lines that unfold
+const SEC={
+ anticip:{ic:"⚠️",t:"Pénuries déclarées par les labos",d:"Officiel (ANSM). Le grossiste peut encore livrer quelques jours : on commande maintenant.",tone:"red"},
+ prev:{ic:"🔮",t:"Pénuries prévues par Hygisense",d:"Pas encore déclarées. Proposées, jamais ajoutées toutes seules : vous décidez.",tone:"blue"},
+ reassort:{ic:"🔁",t:"Réassort habituel",d:"Produits sous votre seuil de 7 jours de ventes.",tone:"grey"},
+ ajout:{ic:"➕",t:"Ajoutés par vous",d:"Médicaments ou parapharmacie ajoutés à la main.",tone:"grey"}};
+function statusTag(l){
+  if(l.sec==="anticip")return `<span class="tag ${l.status==="rupture"?"t-red":"t-amber"}">${l.status==="rupture"?"Rupture":"Tension"} déclarée</span>`;
+  if(l.sec==="prev")return `<span class="tag t-blue">Prévue · ${n1(l.prob)} % à 8 sem.</span>`;
+  if(l.sec==="reassort")return l.epi&&S.epi?`<span class="tag t-blue">+${l.epi} % épidémie</span>`:`<span class="tag t-grey">Réassort</span>`;
+  return l.kind==="para"?`<span class="tag t-grey">Parapharmacie</span>`:`<span class="tag t-green">Ajout</span>`}
+function box(t,body){return `<div class="dbox"><div class="dt">${t}</div>${body}</div>`}
+function reasonChips(l){return (l.reasons||[]).map(r=>{const m=r.match(/^(.*) \(risque (×[\d,]+)\)$/);return `<span class="tag t-grey">${esc(m?m[1]:r)}${m?` <b>${m[2]}</b>`:""}</span>`}).join("")||`<span class="small">Aucun facteur de risque particulier</span>`}
+function detail(l,i){
+  const d=l.demand||0, cov=d>0?l.q/d:null;
+  const pen = l.sec==="anticip"
+    ? `<p><b>${l.status==="rupture"?"Rupture":"Tension"}</b> déclarée par le laboratoire à l'ANSM le <b>${esc(l.since)}</b>.</p><p>Votre grossiste doit encore livrer : ${l.left<=4?`<b style="color:var(--red)">plus que ~${l.left} jours</b>`:`encore ~${l.left} jours`}.</p>${l.link?`<p><a href="${esc(l.link)}" target="_blank" rel="noopener">Voir l'annonce ANSM ↗</a></p>`:""}`
+    : l.sec==="prev"
+    ? `<p><b>Pas encore déclarée.</b></p><p>Probabilité d'une déclaration dans les 8 semaines : <b>${n1(l.prob)} %</b>, soit <b>×${n1(l.index)}</b> le risque d'un médicament moyen.</p>`
+    : l.sec==="reassort" ? `<p>Pas de pénurie connue.</p>${l.epi&&S.epi?`<p>Épidémie en hausse dans votre région : quantité <b>+${l.epi} %</b>.</p>`:""}`
+    : `<p>Ajouté par vous.</p>`;
+  const why = (l.sec==="anticip"||l.sec==="prev") ? `<div class="chips">${reasonChips(l)}</div>` : `<p>${l.sec==="reassort"?"Stock sous 7 jours de ventes.":"—"}</p>`;
+  const calc = `<p>Ventes : <b>${n1(d)}</b> boîte${d>=2?"s":""}/jour · stock <b>${n0(l.stock)}</b> (${l.days!=null?n1(l.days)+" j":"—"})</p>
+    <p>Proposé : <b>${n0(l.sug)}</b> boîte${l.sug>1?"s":""}${cov!=null?` = ≈ ${cov<7?Math.max(1,Math.round(cov))+" j":n1(cov/7)+" sem."} de ventes`:""}</p>
+    ${l.sec==="anticip"||l.sec==="prev"?`<p class="small">Plafond anti-accaparement : ${n0(l.cap)} boîtes (${S.cap} j de ventes)</p>`:""}`;
+  return `<div class="detail">${box("La pénurie",pen)}${box(l.sec==="anticip"||l.sec==="prev"?"Pourquoi ce risque":"Motif",why)}${box("Le calcul",calc)}${box("Fournisseur",supCell(l,i))}</div>`}
+function lineRow(l,i){
+  const o=openR.has(i), inOrder=l.on&&l.q>0;
+  const act = l.sec==="prev"
+     ? (l.on?`<button class="btn ghost nowrap" data-tog="${i}">✓ Dans la commande</button>`:`<button class="btn nowrap" data-tog="${i}">+ Ajouter</button>`)
+     : mode==="edition"?`<button class="x" data-rm="${i}" title="Retirer">✕</button>`:"";
+  return `<div class="ln ${o?"open":""} ${l.sec==="prev"&&!l.on?"off":""}">
+   <div class="lh" data-row="${i}" role="button" tabindex="0" aria-expanded="${o}">
+    <span class="chev">${o?"▾":"▸"}</span>
+    <div class="lp"><div class="pn">${esc(l.name)}</div><div class="pf">${esc(l.form)} · ${esc(l.holder)}</div></div>
+    <div class="ls">${statusTag(l)}</div>
+    <div class="lk num"><div class="pf">Stock</div><b>${n0(l.stock)}</b> <span class="pf">${l.days!=null?n1(l.days)+" j":""}</span></div>
+    <div class="lq num" data-stop>${qtyCell(l,i)}</div>
+    <div class="lv num">${inOrder?eur(lineVal(l)):"—"}</div>
+    <div class="la" data-stop>${act}</div>
+   </div>${o?detail(l,i):""}</div>`}
+function section(key,lines,extra=""){
+  const s=SEC[key], o=openS.has(key), inn=lines.filter(l=>l.on&&l.q>0);
+  const sum = key==="prev" ? `${lines.length} produit${lines.length>1?"s":""} · ${inn.length} ajouté${inn.length>1?"s":""}` : `${inn.length} ligne${inn.length>1?"s":""} · ${n0(inn.reduce((a,l)=>a+l.q,0))} boîtes · ${eur(inn.reduce((a,l)=>a+lineVal(l),0))}`;
+  return `<div class="acc acc-${s.tone} ${o?"open":""}">
+   <button class="acc-h" data-sec="${key}" aria-expanded="${o}"><span class="chev">${o?"▾":"▸"}</span><span class="aic">${s.ic}</span>
+    <span class="att"><b>${s.t}</b><span class="small">${s.d}</span></span><span class="asum">${sum}</span></button>
+   ${o?`<div class="acc-b">${extra}${lines.length?lines.map(l=>lineRow(l,L.indexOf(l))).join(""):`<div class="empty">Rien dans cette catégorie ce matin.</div>`}</div>`:""}</div>`}
+function renderCommande(){
+  const act=L.filter(l=>l.on&&l.q>0), by=k=>L.filter(l=>l.sec===k&&(k==="prev"||l.on));
+  const boxes=act.reduce((a,l)=>a+l.q,0), val=act.reduce((a,l)=>a+lineVal(l),0);
+  const pill=sent?`<span class="pill p-sent">✓ Transmise au logiciel à ${sent}</span>`:mode==="edition"?`<span class="pill p-edit">✏️ Modification en cours</span>`:`<span class="pill p-read">🔒 Lecture seule</span>`;
+  const btns=sent?`<button class="btn" id="reopen">Rouvrir la commande</button>`:mode==="edition"
+    ?`<button class="btn ghost" id="cancel">Annuler</button><button class="btn primary" id="done">✓ Terminer</button>`
+    :`<button class="btn" id="edit">✏️ Modifier</button><button class="btn primary" id="send" ${act.length?"":"disabled"}>Envoyer au logiciel →</button>`;
+  $("#v-commande").innerHTML=`
+  <div class="head"><div><h1>Commande du ${esc(D.today)}</h1>
+   <p class="sub">Préparée cette nuit. Cliquez sur une catégorie, puis sur un produit pour voir le détail. Rien n'est envoyé sans votre validation.</p></div>
+   <div class="row">${pill}${btns}</div></div>
+  ${mode==="edition"?`<div class="banner b-edit">✏️ Modifiez les quantités dans chaque ligne, changez de fournisseur dans le détail, retirez ou ajoutez des produits.</div>`:""}
+  ${sent?`<div class="banner b-sent">✓ Commande déposée dans votre logiciel. Elle part au grossiste quand vous la validez (PharmaML).</div>`:""}
+  <div class="cards">
+   <div class="card kpi"><div class="l">Dans la commande</div><div class="v">${act.length} lignes</div><div class="d">${n0(boxes)} boîtes · ${eur(val)}</div></div>
+   <div class="card kpi"><div class="l">Pénuries déclarées</div><div class="v" style="color:var(--red)">${by("anticip").length}</div><div class="d">à acheter avant que le grossiste soit à sec</div></div>
+   <div class="card kpi"><div class="l">Prévues par Hygisense</div><div class="v" style="color:var(--blue)">${by("prev").length}</div><div class="d">pas encore déclarées · à vous de choisir</div></div>
+   <div class="card kpi"><div class="l">Épidémie (votre région)</div><div class="v">${D.epi_ratio>1?"+"+Math.round((D.epi_ratio-1)*100)+" %":"normal"}</div><div class="d">sur le réassort respiratoire</div></div>
+  </div>
+  ${section("anticip",by("anticip"))}
+  ${section("prev",by("prev"))}
+  ${section("reassort",by("reassort"))}
+  ${section("ajout",by("ajout"),mode==="edition"?`<div class="search"><input id="q" placeholder="Rechercher un produit (nom, laboratoire, parapharmacie…)" autocomplete="off"><div id="res" class="results hide"></div></div>`:`<div class="empty small">Cliquez sur « Modifier » pour ajouter un produit.</div>`)}
+  <p class="note">Plafond anti-accaparement : jamais plus de ${S.cap} jours de vos ventes sur un achat d'avance, pour ne pas créer la pénurie qu'on prévoit. Hygisense ne passe jamais de commande : il la dépose dans votre logiciel, et c'est vous qui l'envoyez.</p>`;
+  bindCommande();
+}
+function bindCommande(){
+  const on=(id,f)=>{const e=$("#"+id);if(e)e.onclick=f};
+  on("edit",()=>{snap=JSON.stringify(L);mode="edition";render()});
+  on("done",()=>{mode="lecture";snap=null;render();toast("Modifications enregistrées")});
+  on("cancel",()=>{if(snap){const o=JSON.parse(snap);L.length=0;o.forEach(x=>L.push(x))}mode="lecture";render()});
+  on("send",openSend);on("reopen",()=>{sent=null;render()});
+  document.querySelectorAll("[data-sec]").forEach(b=>b.onclick=()=>{const k=b.dataset.sec;openS.has(k)?openS.delete(k):openS.add(k);render()});
+  document.querySelectorAll("[data-row]").forEach(b=>{const f=e=>{if(e.target.closest("[data-stop]"))return;const k=+b.dataset.row;openR.has(k)?openR.delete(k):openR.add(k);render()};b.onclick=f;b.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();f(e)}}});
+  document.querySelectorAll("[data-tog]").forEach(b=>b.onclick=()=>{const l=L[+b.dataset.tog];if(sent)sent=null;l.on=!l.on;toast(l.on?`${l.name} ajouté par précaution (${l.q} boîtes)`:`${l.name} retiré`);render()});
+  document.querySelectorAll("[data-dq]").forEach(b=>b.onclick=()=>{const l=L[+b.dataset.dq];l.q=Math.max(0,l.q+ +b.dataset.s);render()});
+  document.querySelectorAll("[data-q]").forEach(inp=>inp.onchange=()=>{const l=L[+inp.dataset.q];l.q=Math.max(0,parseInt(inp.value||"0",10));render()});
+  document.querySelectorAll("[data-sup]").forEach(s=>s.onchange=()=>{L[+s.dataset.sup].sup=s.value;render()});
+  document.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{const l=L[+b.dataset.rm];if(l.sec==="ajout")L.splice(+b.dataset.rm,1);else l.on=false;openR.clear();render();toast("Ligne retirée")});
+  const q=$("#q");if(q){q.oninput=()=>search(q.value)}
+}
+function search(t){
+  const r=$("#res");t=t.trim().toLowerCase();if(t.length<2){r.classList.add("hide");return}
+  const hits=CAT.filter(c=>(c.name+" "+c.holder+" "+c.form).toLowerCase().includes(t)).slice(0,10);
+  r.innerHTML=hits.length?hits.map(c=>`<div class="res" data-add="${c.id}"><div style="flex:1"><div class="pn">${esc(c.name)}</div><div class="pf">${esc(c.form)} · ${esc(c.holder)} · stock ${n0(c.stock)}</div></div>${c.kind==="para"?`<span class="tag t-grey">Parapharmacie</span>`:""}<span class="small">${eur(c.price)}</span><span class="tag t-green">Ajouter</span></div>`).join(""):`<div class="empty">Aucun produit trouvé.</div>`;
+  r.classList.remove("hide");
+  r.querySelectorAll("[data-add]").forEach(e=>e.onclick=()=>{addProduct(e.dataset.add);});
+}
+function addProduct(id){
+  const c=CATI[id];if(!c)return;
+  const ex=L.find(l=>l.id===id&&l.on);if(ex){ex.q+=1;toast(`${c.name} : +1 boîte`);render();return}
+  const q=Math.max(1,Math.ceil((c.demand||0.1)*7));
+  L.push({id:c.id,name:c.name,form:c.form,holder:c.holder,price:c.price,stock:c.stock,demand:c.demand,days:c.demand?c.stock/c.demand:null,kind:c.kind,sec:"ajout",sug:q,q,sup:"grossiste",on:true,alts:[]});
+  openS.add("ajout");toast(`${c.name} ajouté (${q} boîte${q>1?"s":""})`);render();
+}
+function download(name,text){try{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:"text/plain"}));a.download=name;document.body.appendChild(a);a.click();a.remove();return true}catch(e){return false}}
+function openSend(){
+  const act=L.filter(l=>l.on&&l.q>0);
+  const csv=["code;produit;quantite;fournisseur"].concat(act.map(l=>`${l.id};${l.name} ${l.form};${l.q};${supLabel(l)}`)).join("\n");
+  const bySup={};act.forEach(l=>{const s=supLabel(l);bySup[s]=(bySup[s]||0)+1});
+  $("#modal").innerHTML=`<div class="modal-bg"><div class="modal"><header><h3>Envoyer la commande à votre logiciel</h3><button class="x" id="mx" style="margin-left:auto">✕</button></header>
+  <div class="body"><div>${act.length} lignes, ${n0(act.reduce((a,l)=>a+l.q,0))} boîtes, ${eur(act.reduce((a,l)=>a+lineVal(l),0))} au prix public.</div>
+  <table><thead><tr><th>Fournisseur</th><th class="num">Lignes</th></tr></thead><tbody>${Object.entries(bySup).map(([k,v])=>`<tr><td>${esc(k)}</td><td class="num">${v}</td></tr>`).join("")}</tbody></table>
+  <div class="small">La commande est déposée dans votre logiciel de gestion d'officine (import de fichier, ou API de l'éditeur quand elle existe). Vous la retrouvez dans vos commandes en attente et vous l'envoyez au grossiste par PharmaML, comme d'habitude.</div></div>
+  <footer><button class="btn ghost" id="mcopy">Copier le fichier</button><button class="btn" id="mdl">Télécharger le fichier</button><button class="btn primary" id="mok">Déposer dans le logiciel</button></footer></div></div>`;
+  $("#mx").onclick=()=>$("#modal").innerHTML="";
+  $("#mcopy").onclick=()=>{try{navigator.clipboard.writeText(csv).then(()=>toast("Fichier copié"),()=>toast("Copie refusée par le navigateur"))}catch(e){toast("Copie impossible ici")}};
+  $("#mdl").onclick=()=>{download(`commande_hygisense_${D.today_iso}.csv`,csv)?toast("Fichier téléchargé"):toast("Téléchargement bloqué ici : utilisez Copier")};
+  $("#mok").onclick=()=>{const d=new Date();sent=d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});mode="lecture";$("#modal").innerHTML="";render();toast("Commande déposée dans votre logiciel")};
+}
+// ---------- VIGILANCE
+let vf="all", vq="", vmore=10, vs="risk";
+function lineChart(e,label){
+  const W=520,H=150,P=28; const vals=e.values, all=vals.concat(e.fc_values,[e.next]); const max=Math.max(...all)*1.1||1;
+  const n=vals.length+4; const x=i=>P+(W-P-8)*i/(n-1), y=v=>H-20-(H-34)*v/max;
+  const pts=vals.map((v,i)=>`${x(i)},${y(v)}`).join(" ");
+  const off=vals.length-e.fc_values.length; const fpts=e.fc_values.map((v,i)=>`${x(off+i)},${y(v)}`).join(" ");
+  const last=vals.length-1;
+  const yt=[0,max/2,max].map(v=>`<line x1="${P}" x2="${W-8}" y1="${y(v)}" y2="${y(v)}" stroke="currentColor" opacity=".08"/><text x="2" y="${y(v)+3}">${Math.round(v)}</text>`).join("");
+  const xt=[0,Math.floor(vals.length/2),last].map(i=>{const d=new Date(e.weeks[i]);return `<text x="${x(i)-14}" y="${H-4}">${d.toLocaleDateString("fr-FR",{month:"short",year:"2-digit"})}</text>`}).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${label}">${yt}${xt}
+   <polyline points="${fpts}" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-dasharray="3 3" opacity=".7"/>
+   <polyline points="${pts}" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+   <line x1="${x(last)}" y1="${y(vals[last])}" x2="${x(last+4)}" y2="${y(e.next)}" stroke="var(--red)" stroke-width="2" stroke-dasharray="4 3"/>
+   <circle cx="${x(last+4)}" cy="${y(e.next)}" r="4.5" fill="var(--red)"/><circle cx="${x(last)}" cy="${y(vals[last])}" r="3.5" fill="var(--accent)"/></svg>`}
+function epiCard(k,title){const e=D.epi[k];if(!e)return"";const ch=(e.next-e.now)/Math.max(e.now,1);
+  return `<div class="card chart"><div class="row" style="justify-content:space-between"><h3>${title}</h3><span class="tag ${ch>0.1?"t-red":ch<-0.1?"t-green":"t-grey"}">${ch>0?"▲":"▼"} ${Math.abs(Math.round(ch*100))} % dans 4 sem.</span></div>
+  <div class="small">${D.epi_scope&&D.epi_scope!=="France"?`<b>${esc(D.epi_scope)}</b> (votre région)${D.epi_national&&D.epi_national[k]?` · France : ${n0(D.epi_national[k].now)} → ${n0(D.epi_national[k].next)}`:""}<br>`:""}Cas pour 100 000 habitants · aujourd'hui <b>${n0(e.now)}</b> · prévision ${new Date(e.next_week).toLocaleDateString("fr-FR",{day:"numeric",month:"long"})} : <b>${n0(e.next)}</b></div>${lineChart(e,title)}
+  <div class="small"><span style="color:var(--accent)">━</span> observé · <span style="color:var(--blue)">┅</span> ce que le modèle avait prévu · <span style="color:var(--red)">┅●</span> prévision</div></div>`}
+function regionsCard(){if(!D.regions||!D.regions.length)return"";
+  const R=D.regions, me=D.epi_scope; let Lr=R.slice(0,8); const mine=R.find(r=>r.name===me);
+  if(mine&&!Lr.includes(mine))Lr=[...R.slice(0,7),mine];
+  return `<div class="card" style="margin-bottom:14px"><div class="sec-h"><h2>🗺️ Où l'épidémie progresse</h2><span class="why">Le réassort des médicaments respiratoires n'est augmenté que là où l'épidémie monte. Ailleurs, on n'achète pas d'avance.</span></div>
+  <table><thead><tr><th>Région</th><th class="num">Aujourd'hui</th><th class="num">Dans 4 sem.</th><th class="num">Réassort respiratoire</th></tr></thead><tbody>
+  ${Lr.map(r=>`<tr${r.name===me?' style="background:var(--accent-soft)"':""}><td><div class="pn">${esc(r.name)}${r.name===me?" · vous":""}</div></td><td class="num">${n0(r.now)}</td><td class="num">${n0(r.next)}</td>
+   <td class="num">${r.boost>0?`<span class="tag t-red">+${r.boost} %</span>`:`<span class="tag t-grey">normal</span>`}</td></tr>`).join("")}</tbody></table>
+  <div class="empty small">Cas pour 100 000 habitants (réseau Sentinelles, ${R.length} régions). ${R.length>8?`8 régions affichées, les plus en hausse. `:""}Avec le réseau Hygisense, la même carte se fera à partir des ventes agrégées des pharmacies, sans jamais montrer les chiffres d'une pharmacie à une autre.</div></div>`}
+const TILES={31:[3,0],25:[1,1],23:[2,1],22:[3,1],21:[4,1],41:[5,1],42:[6,1],53:[0,2],52:[1,2],24:[2,2],11:[3,2],26:[4,2],43:[5,2],54:[1,3],74:[2,3],83:[3,3],82:[4,3],72:[1,4],73:[2,4],91:[3,4],93:[4,4],94:[5,5]};
+const SHORTR={31:"Nord",25:"B.-Norm.",23:"H.-Norm.",22:"Picardie",21:"Champ.",41:"Lorraine",42:"Alsace",53:"Bretagne",52:"P. Loire",24:"Centre",11:"Île-de-Fr.",26:"Bourg.",43:"Fr.-Comté",54:"Poitou",74:"Limousin",83:"Auvergne",82:"Rhône-Alpes",72:"Aquitaine",73:"Midi-Pyr.",91:"Languedoc",93:"PACA",94:"Corse"};
+function mapCard(){if(!D.regions||!D.regions.length)return"";
+  const S0=72,G=6, col=b=>b>=30?"var(--red)":b>=10?"var(--amber)":"var(--accent)", bg=b=>b>=30?"var(--red-soft)":b>=10?"var(--amber-soft)":"var(--accent-soft)";
+  const me=D.regions.find(r=>r.code===11);
+  const tiles=D.regions.filter(r=>TILES[r.code]).map(r=>{const [c,y]=TILES[r.code];const x0=c*(S0+G),y0=y*(S0+G);
+    return `<g><rect x="${x0}" y="${y0}" width="${S0}" height="${S0}" rx="10" fill="${bg(r.boost)}" stroke="${r.code===11?"var(--ink)":col(r.boost)}" stroke-width="${r.code===11?3:1.2}"/>
+    <text x="${x0+S0/2}" y="${y0+20}" text-anchor="middle" class="tl">${SHORTR[r.code]}</text>
+    <text x="${x0+S0/2}" y="${y0+44}" text-anchor="middle" class="tv" style="fill:${col(r.boost)}">${r.boost>0?"+"+r.boost+" %":"="}</text>
+    <text x="${x0+S0/2}" y="${y0+62}" text-anchor="middle" class="tl">${r.now}→${r.next}</text></g>`}).join("");
+  return `<div class="card chart"><div class="row" style="justify-content:space-between"><h3>🗺️ Où l'épidémie arrive · réassort respiratoire par région</h3></div>
+  <div class="small">Infections respiratoires, cas pour 100 000 hab. aujourd'hui → dans 4 semaines (réseau Sentinelles). Le réassort n'est augmenté que dans les régions en hausse (max +40 %). ${me?`Chez vous (${esc(SHORTR[11])}) : <b>${me.boost>0?"+"+me.boost+" %":"normal"}</b>.`:""}</div>
+  <svg viewBox="-4 -4 ${7*(S0+G)+8} ${6*(S0+G)+8}" width="100%" style="max-height:440px" role="img" aria-label="Carte des régions">${tiles}</svg>
+  <div class="small"><span class="tag t-green">=</span> normal <span class="tag t-amber">+10 à 29 %</span> <span class="tag t-red">+30 % et plus</span> · contour noir : votre pharmacie</div></div>`}
+function renderVigilance(){
+  const V=D.vigilance, thr=quant(V.filter(v=>v.state!=="rupture").map(v=>v.index),1-S.vigil/100);
+  const decl=V.filter(v=>v.state==="declaree"), high=V.filter(v=>v.state==="vigilance"&&v.index>=thr), us=V.filter(v=>v.us), rup=V.filter(v=>v.state==="rupture");
+  let list=V.filter(v=>vf==="all"?v.state!=="rupture":vf==="decl"?v.state==="declaree":vf==="high"?(v.state==="vigilance"&&v.index>=thr):vf==="us"?!!v.us:v.state==="rupture");
+  if(vq)list=list.filter(v=>(v.name+" "+v.form+" "+v.holder).toLowerCase().includes(vq));
+  list=[...list].sort(vs==="days"?(a,b)=>(a.days??999)-(b.days??999):vs==="name"?(a,b)=>a.name.localeCompare(b.name):(a,b)=>b.index-a.index);
+  const act=L.filter(l=>l.on&&l.q>0), wk=D.report.week, dv=(wk.ca-wk.ca_prev)/wk.ca_prev, ira=D.epi.ira;
+  $("#v-tableau").innerHTML=`
+  <div class="head"><div><h1>Tableau de bord · ${esc(D.today)}</h1><p class="sub">${esc(S.pharmacy)} · tout ce qu'Hygisense voit ce matin, sur une page.</p></div>
+   <div class="row"><button class="btn primary" id="toCmd">Voir la commande du jour →</button></div></div>
+  <div class="cards k6">
+   <div class="card kpi click" data-go="commande"><div class="l">Commande du jour</div><div class="v">${act.length} lignes</div><div class="d">${n0(act.reduce((a,l)=>a+l.q,0))} boîtes · ${eur(act.reduce((a,l)=>a+lineVal(l),0))}</div></div>
+   <div class="card kpi"><div class="l">Pénuries déclarées</div><div class="v" style="color:var(--red)">${D.anticip.length}</div><div class="d">à acheter ce matin, grossiste encore livré</div></div>
+   <div class="card kpi"><div class="l">Prévues par Hygisense</div><div class="v" style="color:var(--blue)">${D.prev.length}</div><div class="d">risque élevé, pas encore déclarées</div></div>
+   <div class="card kpi"><div class="l">En pénurie aux États-Unis</div><div class="v">${us.length}</div><div class="d">risque ×${n1(R.risk_model.vigilance.relative_risks.us_any)} en France</div></div>
+   <div class="card kpi"><div class="l">Épidémie respiratoire</div><div class="v">${ira?n0(ira.now)+" → "+n0(ira.next):"–"}</div><div class="d">cas/100 000 dans 4 sem. · ${esc(D.epi_scope||"France")}</div></div>
+   <div class="card kpi"><div class="l">CA 7 jours</div><div class="v">${eur(wk.ca)}</div><div class="d ${dv>=0?"up":"down"}">${dv>=0?"▲":"▼"} ${Math.abs(Math.round(dv*100))} % · ${n0(wk.lost_boxes)} boîtes manquées</div></div>
+  </div>
+  <div class="card" style="margin-bottom:14px">
+   <div class="sec-h"><h2>🔎 Vos médicaments</h2><span class="why">Recherchez un produit, filtrez, triez : risque de pénurie à 8 semaines, raisons et stock.</span><span class="count">${list.length} produits</span></div>
+   <div class="filters">${[["all","Tous"],["decl","Déclarées"],["high","Vigilance élevée"],["us","États-Unis"],["rup","Déjà en rupture"]].map(([k,t])=>`<button class="chip" data-f="${k}" aria-pressed="${vf===k}">${t}</button>`).join("")}
+    <select id="vs" class="sel" aria-label="Trier"><option value="risk" ${vs==="risk"?"selected":""}>Trier : risque le plus élevé</option><option value="days" ${vs==="days"?"selected":""}>Trier : moins de jours de stock</option><option value="name" ${vs==="name"?"selected":""}>Trier : nom A→Z</option></select>
+    <input id="vq" class="bigsearch" placeholder="Rechercher un médicament, une molécule, un laboratoire…" value="${esc(vq)}"></div>
+   <table><thead><tr><th>Produit</th><th>Probabilité à 8 semaines</th><th>Pourquoi</th><th class="num">Stock</th></tr></thead><tbody>
+   ${list.slice(0,vmore).map(v=>{const col=v.state==="declaree"?"var(--red)":v.index>=thr?"var(--amber)":"var(--accent)";
+     return `<tr><td><div class="pn">${esc(v.name)}</div><div class="pf">${esc(v.form)} · ${esc(v.holder)}</div></td>
+     <td><div class="row"><div class="bar"><i style="width:${Math.min(100,Math.log1p(v.index)/Math.log1p(20)*100)}%;background:${col}"></i></div><b>${v.state==="declaree"?"déclarée":n1(v.prob)+" %"}</b></div><div class="small">×${n1(v.index)} un médicament moyen ${v.state==="declaree"?`<span class="tag t-red">Déclarée</span>`:v.state==="rupture"?`<span class="tag t-grey">Déjà en rupture</span>`:v.index>=thr?`<span class="tag t-amber">Vigilance élevée</span>`:""}</div></td>
+     <td><div class="chips">${v.us?`<span class="tag t-blue">🇺🇸 États-Unis depuis ${v.us}</span>`:""}${v.reasons.filter(r=>!r.includes("États-Unis")).map(r=>{const m=r.match(/^(.*) \(risque (×[\d,]+)\)$/);return `<span class="tag t-grey">${esc(m?m[1]:r)} <b>${m?m[2]:""}</b></span>`}).join("")||`<span class="small">Aucun facteur particulier</span>`}</div></td>
+     <td class="num">${n0(v.stock)}<div class="pf">${v.days!=null?n1(v.days)+" j":"—"}</div></td></tr>`}).join("")}
+   </tbody></table>
+   ${list.length>vmore?`<div class="empty"><button class="collapse" id="vmore">Afficher 20 de plus (${list.length-vmore} restants)</button></div>`:list.length?"":`<div class="empty">Aucun produit.</div>`}
+  </div>
+  <div class="grid2">${epiCard("ira","Infections respiratoires aiguës")}${epiCard("grippe","Syndromes grippaux")}</div>
+  <div class="grid2" style="margin-top:14px">${mapCard()}${proofMini()}</div>
+  <p class="note">Probabilité = chance qu'un laboratoire déclare une pénurie sur ce produit dans les 8 semaines (indice mesuré sur 2025, vérifié sur 2026). Démo : vraies données ANSM, FDA et Sentinelles ; stock et ventes simulés.</p>`;
+  document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{vf=b.dataset.f;vmore=10;render()});
+  const so=$("#vs");if(so)so.onchange=()=>{vs=so.value;render()};
+  const inp=$("#vq");inp.oninput=()=>{vq=inp.value.toLowerCase();const p=inp.selectionStart;render();const n=$("#vq");n.focus();n.setSelectionRange(p,p)};
+  const m=$("#vmore");if(m)m.onclick=()=>{vmore+=20;render()};
+  const tc=$("#toCmd");if(tc)tc.onclick=()=>go("commande");
+  document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
+}
+function proofMini(){const s=D.proof_summary, ok=D.proof.filter(p=>p.seen).sort((a,b)=>b.lead-a.lead);
+  const fd=x=>new Date(x).toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit"});
+  return `<div class="card chart"><h3>🔮 Vus venir avant l'annonce (rejeu 2026)</h3>
+  <div class="small">Sur ${s.declarations} pénuries déclarées sur vos produits en 2026, Hygisense en avait repéré <b style="color:var(--blue)">${s.caught}</b> au moins une semaine avant. Au hasard : ${n0(s.random_expected)}.</div>
+  <table style="margin-top:8px"><thead><tr><th>Produit</th><th>Repéré</th><th>Déclaré</th><th class="num">Avance</th></tr></thead><tbody>
+  ${ok.slice(0,7).map(p=>`<tr><td><div class="pn">${esc(p.name)}</div></td><td>${fd(p.seen)}</td><td>${fd(p.declared)}</td><td class="num nowrap"><b style="color:var(--blue)">${p.lead>=56?"≥ 8 sem.":p.lead+" j"}</b></td></tr>`).join("")}</tbody></table></div>`}
+function proofCard(){const s=D.proof_summary, ok=D.proof.filter(p=>p.seen), miss=D.proof.filter(p=>!p.seen);
+  const fd=x=>new Date(x).toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit"});
+  return `<div class="card" style="border-color:var(--blue);margin-bottom:14px"><div class="sec-h"><h2>🔮 La preuve : vus venir avant l'annonce</h2><span class="why">Rejoué sur 2026 dans cette pharmacie, sans connaître l'avenir.</span></div>
+  <div class="cards" style="margin:12px 16px">
+   <div class="card kpi"><div class="l">Pénuries déclarées en 2026 sur vos produits</div><div class="v">${s.declarations}</div></div>
+   <div class="card kpi"><div class="l">Repérées au moins 1 semaine avant</div><div class="v" style="color:var(--blue)">${s.caught}</div><div class="d">souvent 8 semaines avant</div></div>
+   <div class="card kpi"><div class="l">Au hasard, on en aurait repéré</div><div class="v">${n0(s.random_expected)}</div><div class="d">en surveillant autant de produits (${pc(s.flag_share)})</div></div>
+  </div>
+  <table><thead><tr><th>Produit</th><th>Repéré par Hygisense</th><th>Déclaré par le labo</th><th class="num">Avance</th><th>Pourquoi</th></tr></thead><tbody>
+  ${ok.slice(0,8).map(p=>`<tr><td><div class="pn">${esc(p.name)}</div><div class="pf">${esc(p.form)}</div></td><td>dès le <b>${fd(p.seen)}</b></td><td>${p.status==="rupture"?"rupture":"tension"} le ${fd(p.declared)}</td><td class="num nowrap"><b style="color:var(--blue)">${p.lead>=56?"≥ 8 sem.":p.lead+" j"}</b></td>
+   <td><div class="chips">${p.reasons.map(r=>`<span class="tag t-grey">${esc(r.replace(/ \(risque.*\)$/,""))}</span>`).join("")}</div></td></tr>`).join("")}</tbody></table>
+  <div class="empty small">${ok.length>8?`+ ${ok.length-8} autres repérées. `:""}Non repérées : ${miss.length} (dont ${miss.slice(0,3).map(p=>esc(p.name)).join(", ")}). L'indice signale un risque, pas une date : il sert à surveiller et à constituer un peu de stock, l'achat principal se fait à l'annonce.</div></div>`}
+function quant(a,q){if(!a.length)return 0;const s=[...a].sort((x,y)=>x-y);return s[Math.min(s.length-1,Math.floor(q*s.length))]}
+// ---------- RAPPORTS
+let rp="week";
+function bars(w){const W=560,H=250,P=34,max=Math.max(...w.map(x=>x.ca))*1.12;const bw=(W-P-10)/w.length;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Chiffre d'affaires par semaine">${[0,.5,1].map(f=>`<line x1="${P}" x2="${W}" y1="${H-20-(H-34)*f}" y2="${H-20-(H-34)*f}" stroke="currentColor" opacity=".08"/><text x="0" y="${H-17-(H-34)*f}">${n0(max*f/1000)}k</text>`).join("")}
+  ${w.map((x,i)=>{const h=(H-34)*x.ca/max;return `<rect x="${P+i*bw+4}" y="${H-20-h}" width="${bw-8}" height="${h}" rx="3" fill="${i===w.length-1?"var(--accent)":"var(--accent-soft)"}" stroke="var(--accent)" stroke-opacity=".35"/>${i%2===w.length%2?`<text x="${P+i*bw+2}" y="${H-5}">${x.week}</text>`:""}`}).join("")}</svg>`}
+function renderRapports(){
+  const p=D.report[rp], dv=(p.ca-p.ca_prev)/p.ca_prev;
+  $("#v-rapports").innerHTML=`
+  <div class="head"><div><h1>Rapports</h1><p class="sub">Généré automatiquement et envoyé ${S.freq==="hebdo"?"chaque "+S.day:"le 1er de chaque mois"} à ${S.hour} à <b>${esc(S.email)}</b>. Aussi disponible ici.</p></div>
+   <div class="row"><button class="chip" data-p="week" aria-pressed="${rp==="week"}">7 derniers jours</button><button class="chip" data-p="month" aria-pressed="${rp==="month"}">30 derniers jours</button><button class="btn" id="mail">✉️ Aperçu de l'e-mail</button></div></div>
+  <div class="cards">
+   <div class="card kpi"><div class="l">Chiffre d'affaires</div><div class="v">${eur(p.ca)}</div><div class="d ${dv>=0?"up":"down"}">${dv>=0?"▲":"▼"} ${Math.abs(Math.round(dv*100))} % vs période précédente</div></div>
+   <div class="card kpi"><div class="l">Marge brute estimée</div><div class="v">${eur(p.margin)}</div><div class="d">hypothèse 25 % du CA</div></div>
+   <div class="card kpi"><div class="l">Boîtes vendues</div><div class="v">${n0(p.boxes)}</div><div class="d">médicaments</div></div>
+   <div class="card kpi"><div class="l">Boîtes manquées (pénuries)</div><div class="v" style="color:var(--red)">${n0(p.lost_boxes)}</div><div class="d">patients non servis au comptoir</div></div>
+   <div class="card kpi"><div class="l">Pénuries annoncées sur vos produits</div><div class="v">${p.declarations}</div><div class="d">${p.emptying} auraient vidé votre rayon · ${p.anticipated} anticipées</div></div>
+   <div class="card kpi"><div class="l">Achats anticipés proposés</div><div class="v">${p.buy_lines}</div><div class="d">produits</div></div>
+  </div>
+  <div class="grid2">
+   <div class="card chart"><h3>Chiffre d'affaires par semaine</h3><div class="small">12 dernières semaines, dont parapharmacie</div>${bars(D.report.weeks)}</div>
+   <div class="card"><div class="sec-h"><h2>Meilleures ventes</h2><span class="count">${rp==="week"?"7 jours":"30 jours"}</span></div><table><tbody>${p.top.map((t,i)=>`<tr><td class="small">${i+1}</td><td class="pn">${esc(t.name)}</td><td class="num">${eur(t.ca)}</td></tr>`).join("")}</tbody></table></div>
+  </div>
+  <div class="card sec"><div class="sec-h"><h2>Produits manquants au comptoir</h2><span class="why">pendant une pénurie, faute de stock</span></div>
+   ${p.missing.length?`<table><tbody>${p.missing.map(t=>`<tr><td class="pn">${esc(t.name)}</td><td class="num">${n0(t.boxes)} boîte${t.boxes>1?"s":""} manquée${t.boxes>1?"s":""}</td></tr>`).join("")}</tbody></table>`:`<div class="empty">Aucune boîte manquée sur la période.</div>`}</div>
+  <p class="note">Ventes et prix simulés sur le catalogue réel (prix public BDPM). En production : ventes lues chaque nuit dans votre logiciel.</p>`;
+  document.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{rp=b.dataset.p;render()});
+  $("#mail").onclick=openMail;
+}
+function openMail(){const p=D.report[rp];const ant=D.anticip;
+  $("#modal").innerHTML=`<div class="modal-bg"><div class="modal"><header><h3>Aperçu de l'e-mail automatique</h3><button class="x" id="mx" style="margin-left:auto">✕</button></header>
+  <div class="body"><div class="small">À : ${esc(S.email)} · Objet : Hygisense — votre rapport ${rp==="week"?"de la semaine":"du mois"}</div>
+  <div class="mail"><b>Bonjour,</b><p>Voici le point ${rp==="week"?"de la semaine":"du mois"} pour ${esc(S.pharmacy)} (du ${new Date(p.from).toLocaleDateString("fr-FR")} au ${new Date(p.to).toLocaleDateString("fr-FR")}).</p>
+  <h4>Activité</h4>• Chiffre d'affaires : ${eur(p.ca)} (${p.ca>=p.ca_prev?"+":""}${Math.round((p.ca-p.ca_prev)/p.ca_prev*100)} %)<br>• Marge brute estimée : ${eur(p.margin)}<br>• Boîtes vendues : ${n0(p.boxes)}
+  <h4>Pénuries</h4>• ${p.declarations} pénurie${p.declarations>1?"s":""} annoncée${p.declarations>1?"s":""} sur vos produits ; ${p.anticipated} sur ${p.emptying} qui auraient vidé votre rayon ont été anticipées<br>• ${n0(p.lost_boxes)} boîtes manquées au comptoir<br>• À commander aujourd'hui : ${ant.slice(0,4).map(a=>esc(a.name)).join(", ")}${ant.length>4?"…":""}
+  <h4>À surveiller</h4>• ${D.vigilance.filter(v=>v.us&&v.state==="vigilance").length} de vos produits sont en pénurie aux États-Unis<br>${D.epi.ira?`• Infections respiratoires : ${n0(D.epi.ira.now)} → ${n0(D.epi.ira.next)} cas/100 000 prévus dans 4 semaines`:""}
+  <p>Le détail est dans l'application, onglet Rapports.</p></div></div>
+  <footer><button class="btn" id="mx2">Fermer</button></footer></div></div>`;
+  $("#mx").onclick=$("#mx2").onclick=()=>$("#modal").innerHTML=""}
+// ---------- PARAMETRES
+function renderParametres(){
+  const labs=["BIOGARAN","VIATRIS","TEVA","SANDOZ","EG LABO","ARROW","ZENTIVA","CRISTERS"];
+  const f=(k,lab,inp,hint)=>`<label for="s_${k}">${lab}</label><div>${inp}</div>${hint?`<div class="hint">${hint}</div>`:""}`;
+  const sel=(k,opts)=>`<select id="s_${k}">${opts.map(([v,t])=>`<option value="${v}" ${String(S[k])===String(v)?"selected":""}>${t}</option>`).join("")}</select>`;
+  const inp=(k,type="text",extra="")=>`<input id="s_${k}" type="${type}" value="${esc(S[k])}" ${extra}>`;
+  $("#v-parametres").innerHTML=`
+  <div class="head"><div><h1>Paramètres</h1><p class="sub">Ces réglages s'appliquent à votre pharmacie.</p></div><button class="btn primary" id="save">Enregistrer</button></div>
+  <div class="form">
+   <div class="card fs"><h3>Pharmacie et rapport</h3><div class="fg">
+    ${f("pharmacy","Nom de la pharmacie",inp("pharmacy"))}
+    ${f("email","E-mail du titulaire",inp("email","email"),"Le rapport est envoyé à cette adresse.")}
+    ${f("freq","Fréquence du rapport",sel("freq",[["hebdo","Chaque semaine"],["mensuel","Chaque mois"]]))}
+    ${f("day","Jour d'envoi",sel("day",["lundi","mardi","mercredi","jeudi","vendredi","samedi"].map(d=>[d,d[0].toUpperCase()+d.slice(1)])))}
+    ${f("hour","Heure d'envoi",inp("hour","time"))}</div></div>
+   <div class="card fs"><h3>Connexion au logiciel de la pharmacie</h3><div class="fg">
+    ${f("sync","Synchronisation du stock et des ventes",inp("sync","time"),"Lecture seule, chaque nuit. La commande proposée est prête avant l'ouverture.")}
+    ${f("ansm","Lecture des alertes (ANSM, FDA, épidémies)",sel("ansm",[["1","1 fois par jour"],["2","2 fois par jour (nuit et 13 h)"]]))}
+    ${f("mode","À l'ouverture de la commande",sel("mode",[["lecture","Lecture seule (recommandé)"],["edition","Directement en modification"]]),"La lecture seule évite de modifier une commande par erreur.")}</div></div>
+   <div class="card fs"><h3>Commande</h3><div class="fg">
+    ${f("cover","Couverture du réassort (jours)",inp("cover","number",'min="5" max="60"'))}
+    ${f("cap","Plafond d'un achat anticipé (jours de ventes)",inp("cap","number",'min="7" max="60"'),"Au-delà, Hygisense affiche une alerte : acheter trop crée la pénurie.")}
+    ${f("epi","Ajuster les quantités pendant les épidémies",sel("epi",[["true","Oui (produits respiratoires et anti-infectieux)"],["false","Non"]]))}</div></div>
+   <div class="card fs"><h3>Fournisseurs et laboratoires</h3><div class="fg">
+    ${f("grossiste","Grossiste principal",sel("grossiste",["OCP Répartition","CERP","Alliance Healthcare","Phoenix Pharma"].map(g=>[g,g])))}
+    ${f("lab","Laboratoire de génériques préféré",sel("lab",labs.map(l=>[l,l[0]+l.slice(1).toLowerCase()])),"Proposé en priorité (★) quand un générique équivalent existe.")}
+    ${f("remise","Remise négociée avec ce laboratoire (%)",inp("remise","number",'min="0" max="40"'),"Remise sur les génériques plafonnée par la loi : vérifiez le plafond en vigueur.")}</div></div>
+   <div class="card fs"><h3>Vigilance</h3><div class="fg">
+    ${f("vigil","Seuil « vigilance élevée »",sel("vigil",[[5,"Top 5 % des risques"],[10,"Top 10 % (recommandé)"],[20,"Top 20 %"]]))}</div></div>
+  </div>`;
+  $("#save").onclick=()=>{Object.keys(DEF).forEach(k=>{const e=$("#s_"+k);if(!e)return;let v=e.value;if(["cover","cap","remise","vigil"].includes(k))v=Number(v);if(k==="epi")v=v==="true";S[k]=v});saveS();sync();toast("Paramètres enregistrés")};
+}
+// ---------- METHODE
+function renderMethode(){
+  const B=R.by_pharmacy, M=R.risk_model, V=M.vigilance;
+  const useless=(B[0].useless_buy_episodes+B[1].useless_buy_episodes)/Math.max(B[0].buy_episodes+B[1].buy_episodes,1);
+  const DL={BUY:"Racheter",WATCH:"À surveiller","TOO LATE":"Trop tard",FROZEN:"Gelé",NO:"Ne pas racheter"};const tr=s=>{const [d,q]=s.split(" ");return (DL[d]||d)+(q&&q!=="0"?" "+q:"")};
+  $("#v-methode").innerHTML=`
+  <div class="head"><div><h1>Méthode et preuves</h1><p class="sub">Comment Hygisense décide, et ce que nous avons mesuré sur les vraies données de 2026 (aucun réglage sur l'année de test).</p></div></div>
+  <div class="cards">
+   <div class="card kpi"><div class="l">Pénuries anticipées à l'annonce</div><div class="v ok">${pc(R.anticipation_rate_overall)}</div><div class="d">des pénuries qui vident le rayon · objectif ≥ ${pc(R.criterion)}</div></div>
+   <div class="card kpi"><div class="l">Vues venir avant l'alerte</div><div class="v ok">${pc(M.vigilance_top10pct_test.recall)}</div><div class="d">dans le top 10 % de vigilance · ×${n1(M.vigilance_top10pct_test.lift)} vs hasard</div></div>
+   <div class="card kpi"><div class="l">Achats au-dessus du plafond</div><div class="v ok">${B[0].cap_breaches+B[1].cap_breaches}</div><div class="d">doit rester à 0</div></div>
+   <div class="card kpi"><div class="l">Achats anticipés inutiles</div><div class="v ko">${pc(useless)}</div><div class="d">à faire baisser sous 40 %</div></div>
+  </div>
+  <div class="grid2">
+   <div class="card fs"><h3>Indice de vigilance (avant l'alerte)</h3><table><tbody>
+    ${Object.entries(V.relative_risks).map(([k,v])=>`<tr><td>${({is_mitm:"Intérêt thérapeutique majeur",single_source:"Un seul laboratoire",us_any:"En pénurie aux États-Unis (FDA)",atc_N:"Classe système nerveux",sub_on:"Même substance déjà en pénurie"})[k]||k}</td><td class="num"><b>×${n1(v)}</b></td></tr>`).join("")}
+    <tr><td class="small">Qualité du classement 2026 (AUC)</td><td class="num">${String(M.vigilance_auc_test).replace(".",",")} <span class="small">(avant : ${String(M.v1_logistic_auc_test).replace(".",",")})</span></td></tr>
+    <tr><td class="small">Pénurie aux États-Unis : risque en France</td><td class="num">×${n1(M.us_shortage_relative_risk["2025"])} (2025) · ×${n1(M.us_shortage_relative_risk["2026"])} (2026)</td></tr></tbody></table></div>
+   <div class="card fs"><h3>Prévision des épidémies (4 semaines)</h3><table><thead><tr><th>Erreur moyenne</th><th class="num">Grippe</th><th class="num">IRA</th></tr></thead><tbody>
+    ${["persistence","climatology","model"].map(k=>`<tr><td>${({persistence:"Valeur actuelle",climatology:"Moyenne des années passées",model:"<b>Modèle Hygisense</b>"})[k]}</td><td class="num">${n0(M.epidemic_model_mae_4w.grippe[k])}</td><td class="num">${n0(M.epidemic_model_mae_4w.ira[k])}</td></tr>`).join("")}</tbody></table>
+    <div class="small" style="margin-top:8px">Cas pour 100 000 habitants, 2023–2026. Sert à ajuster les quantités, pas à déclencher un achat.</div></div>
+  </div>
+  <div class="card sec"><div class="sec-h"><h2>Tout repose sur le stock des grossistes</h2></div><table><tbody>
+   ${R.sensitivity_wholesaler_buffer.map(x=>`<tr><td>Si le grossiste livre encore ${x.wholesaler_buffer_days} jours après l'annonce</td><td class="num"><b>${pc(x.anticipation_rate)}</b> anticipées</td></tr>`).join("")}</tbody></table>
+   <div class="empty small">Minimum légal : 2 semaines (art. R5124-59 du Code de la santé publique) ; 18,5 jours mesurés en moyenne par l'IGAS.</div></div>
+  <div class="card sec"><div class="sec-h"><h2>Les 20 cas de garde-fou</h2><span class="count">${R.decision_cases_passed}/${R.decision_cases_total}</span></div><table><thead><tr><th>Cas</th><th>Produit</th><th>Attendu</th><th>Hygisense</th><th></th></tr></thead><tbody>
+   ${D.cases.map(c=>`<tr><td>${c.case}</td><td><div class="pn">${esc(c.product)}</div><div class="pf">${esc(CASFR[c.edge_case]||c.edge_case)}</div></td><td>${tr(c.expected)}</td><td>${tr(c.got)}</td><td class="${c.pass?"ok":"ko"}">${c.pass?"✓":"✗"}</td></tr>`).join("")}</tbody></table></div>
+  <p class="note">Sources : base publique des médicaments (ANSM, HAS, UNCAM, fichiers de novembre 2026) ; openFDA Drug Shortages ; Réseau Sentinelles (Inserm, Sorbonne Université). Stock et ventes des pharmacies simulés.</p>`;
+}
+const CASFR={"—":"Cas nominal, quantité plafonnée","high risk but enough stock":"Risque élevé mais stock suffisant","low stock, low risk":"Stock bas, risque faible","ANSM quota (contingentement)":"Quota ANSM (contingentement)","no generic group (biologic)":"Pas de groupe générique (biologique)","insufficient history":"Historique insuffisant","seasonality":"Saisonnalité","risk in the watch band":"Risque dans la zone à surveiller","personal data in a notice":"Nom de patiente dans un avis","same molecule, other dosage":"Même molécule, autre dosage","signal lifted":"Signal levé","stock already at zero":"Stock déjà à zéro","high risk, 50 days of stock":"Risque élevé, 50 jours de stock","notice in English":"Avis en anglais","watch band":"Zone à surveiller","all generics also short":"Tous les génériques aussi en tension","prompt injection in a notice":"Injection « commande 500 boîtes » dans un avis","very slow mover":"Rotation très lente","threshold boundary + exact date":"Pile au seuil + date exacte","collective over-buying":"Achat collectif : gel réseau"};
+// ---------- shell
+function sync(){$("#phName").textContent=S.pharmacy;$("#fSync").textContent=S.sync;const n=L.filter(l=>(l.sec==="anticip")&&l.on).length;$("#nAnt").textContent=n||"";$("#nAnt").classList.toggle("hide",!n)}
+function render(){sync();({commande:renderCommande,tableau:renderVigilance,rapports:renderRapports,parametres:renderParametres,methode:renderMethode})[view]()}
+{const h=location.hash.slice(1);if(h==="vigilance")view="tableau";if(["tableau","commande","rapports","parametres","methode"].includes(h))view=h;if(h==="edition"){mode="edition";view="commande"}}
+window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(["tableau","commande","rapports","parametres","methode"].includes(h))go(h)});
+document.querySelectorAll(".nav").forEach(b=>b.addEventListener("click",()=>{try{history.replaceState(null,"","#"+b.dataset.v)}catch(e){}}));
+document.querySelectorAll(".nav").forEach(b=>b.setAttribute("aria-current",b.dataset.v===view?"page":"false"));["tableau","commande","rapports","parametres","methode"].forEach(k=>$("#v-"+k).classList.toggle("hide",k!==view));
+render();
+</script></body></html>

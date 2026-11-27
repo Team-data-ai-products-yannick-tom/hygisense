@@ -1,0 +1,166 @@
+{
+  "data": {
+    "source": "BDPM (ANSM, HAS, UNCAM), files of November 2026; openFDA drug shortages; R\u00e9seau Sentinelles (Inserm, Sorbonne Universit\u00e9)",
+    "snapshot": "2026-11-19",
+    "marketed_products": 12236,
+    "ansm_declarations_used": 506,
+    "declarations_by_status": {
+      "tension": 451,
+      "rupture": 55
+    },
+    "left_out_back_in_stock_without_start": 114,
+    "fda_records": 1556,
+    "products_matched_to_fda": 0.174
+  },
+  "windows": {
+    "train": [
+      "2024-01-01",
+      "2025-03-01"
+    ],
+    "validation": [
+      "2025-03-29",
+      "2025-11-01"
+    ],
+    "test": [
+      "2026-01-01",
+      "2026-11-19"
+    ]
+  },
+  "decision_cases_passed": 20,
+  "decision_cases_total": 20,
+  "risk_model": {
+    "rows_test": 117476,
+    "positives_test": 326,
+    "v1_logistic_auc_test": 0.677,
+    "v1_logistic_top1pct_test": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "base_rate": 0.0028,
+      "lift": 0.0
+    },
+    "auc_is_mitm_alone_test": 0.653,
+    "vigilance": {
+      "base_rate_8w": 0.00101,
+      "relative_risks": {
+        "is_mitm": 8.11,
+        "single_source": 4.36,
+        "us_any": 2.47,
+        "atc_N": 1.75,
+        "sub_on": 6.98
+      }
+    },
+    "vigilance_auc_validation": 0.819,
+    "vigilance_auc_test": 0.761,
+    "vigilance_top1pct_test": {
+      "precision": 0.0119,
+      "recall": 0.043,
+      "base_rate": 0.0028,
+      "lift": 4.3
+    },
+    "vigilance_top10pct_test": {
+      "precision": 0.0078,
+      "recall": 0.282,
+      "base_rate": 0.0028,
+      "lift": 2.8
+    },
+    "watch_share_test": 0.154,
+    "watch_captured_test": 126,
+    "us_shortage_relative_risk": {
+      "2025": 2.38,
+      "2026": 2.06
+    },
+    "watch_threshold": 0.00257,
+    "epidemic_model_mae_4w": {
+      "grippe": {
+        "persistence": 55.8,
+        "climatology": 59.3,
+        "model": 49.8
+      },
+      "ira": {
+        "persistence": 79.2,
+        "climatology": 68.8,
+        "model": 62.5
+      }
+    },
+    "epidemic_model_mae_4w_ile_de_france": {
+      "grippe": {
+        "persistence": 43.2,
+        "climatology": 42.1,
+        "model": 38.0,
+        "national_model": 40.1
+      },
+      "ira": {
+        "persistence": 60.9,
+        "climatology": 52.6,
+        "model": 50.0,
+        "national_model": 63.7
+      }
+    }
+  },
+  "anticipation_rate_overall": 0.635,
+  "criterion": 0.25,
+  "product_gate": 0.21,
+  "by_pharmacy": [
+    {
+      "pharmacy": "large",
+      "references": 3000,
+      "declarations_on_its_products": 45,
+      "declarations_that_empty_the_shelf": 31,
+      "anticipated": 21,
+      "anticipation_rate": 0.677,
+      "anticipated_before_the_declaration": 0,
+      "rate_tension": 0.654,
+      "rate_rupture": 0.8,
+      "buy_episodes": 27,
+      "useless_buy_episodes": 7,
+      "useless_share": 0.259,
+      "cap_breaches": 0,
+      "lost_units_do_nothing": 56.0,
+      "lost_units_if_followed": 29.0,
+      "lost_units_reduction": 0.482,
+      "forecast_wape": {
+        "mean_56d": 0.383,
+        "seasonal": 0.417
+      }
+    },
+    {
+      "pharmacy": "small",
+      "references": 1800,
+      "declarations_on_its_products": 35,
+      "declarations_that_empty_the_shelf": 21,
+      "anticipated": 12,
+      "anticipation_rate": 0.571,
+      "anticipated_before_the_declaration": 0,
+      "rate_tension": 0.5,
+      "rate_rupture": 1.0,
+      "buy_episodes": 15,
+      "useless_buy_episodes": 5,
+      "useless_share": 0.333,
+      "cap_breaches": 0,
+      "lost_units_do_nothing": 14.0,
+      "lost_units_if_followed": 12.0,
+      "lost_units_reduction": 0.143,
+      "forecast_wape": {
+        "mean_56d": 0.521,
+        "seasonal": 0.558
+      }
+    }
+  ],
+  "sensitivity_wholesaler_buffer": [
+    {
+      "wholesaler_buffer_days": 0,
+      "anticipation_rate": 0.0,
+      "shelf_emptying_declarations": 31
+    },
+    {
+      "wholesaler_buffer_days": 7,
+      "anticipation_rate": 0.645,
+      "shelf_emptying_declarations": 31
+    },
+    {
+      "wholesaler_buffer_days": 14,
+      "anticipation_rate": 0.677,
+      "shelf_emptying_declarations": 31
+    }
+  ]
+}

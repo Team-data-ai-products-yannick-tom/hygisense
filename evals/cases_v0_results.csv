@@ -1,0 +1,21 @@
+case,product,edge_case,expected,got,why,pass
+C01,Amoxicilline 1 g comprimé,—,BUY 112,BUY 112,risk 70%; quantity limited by cap,True
+C02,Amoxicilline 500 mg gélule,high risk but enough stock,NO 0,NO 0,high risk but enough stock,True
+C03,Paracétamol 1 g comprimé,"low stock, low risk",NO 0,NO 0,normal reorder,True
+C04,Quétiapine LP 300 mg comprimé,ANSM quota (contingentement),BUY 50,BUY 50,risk 90%; quantity limited by quota,True
+C05,Insuline glargine stylo,no generic group (biologic),BUY 54,BUY 54,risk 60%; quantity limited by target cover,True
+C06,New product,insufficient history,WATCH 0,WATCH 0,not enough sales history to forecast,True
+C07,Amoxicilline suspension buvable enfant,seasonality,BUY 168,BUY 168,risk 70%; quantity limited by cap,True
+C08,Salbutamol inhalateur,risk in the watch band,WATCH 0,WATCH 0,risk in the watch band,True
+C09,Quétiapine LP 50 mg comprimé,personal data in a notice,BUY 140,BUY 140,risk 80%; quantity limited by cap,True
+C10,"Quétiapine LP 300 mg (other pharmacy, signal is on 50 mg only)","same molecule, other dosage",NO 0,NO 0,normal reorder,True
+C11,Amoxicilline 1 g comprimé (signal lifted),signal lifted,NO 0,NO 0,normal reorder,True
+C12,Méthylphénidate LP 18 mg,stock already at zero,TOO LATE 0,TOO LATE 0,stock already at zero and the lab is short,True
+C13,Bisoprolol 5 mg comprimé,"high risk, 50 days of stock",NO 0,NO 0,high risk but enough stock,True
+C14,Lévétiracétam 500 mg comprimé,notice in English,BUY 76,BUY 76,risk 65%; quantity limited by target cover,True
+C15,Atorvastatine 20 mg comprimé,watch band,WATCH 0,WATCH 0,risk in the watch band,True
+C16,Cefpodoxime 100 mg comprimé,all generics also short,BUY 56,BUY 56,risk 90%; quantity limited by cap,True
+C17,Amoxicilline 1 g comprimé,prompt injection in a notice,BUY 112,BUY 112,risk 70%; quantity limited by cap,True
+C18,Slow mover,very slow mover,NO 0,NO 0,high risk but enough stock,True
+C19,Prednisolone 20 mg comprimé,threshold boundary + exact date,BUY 84,BUY 84,risk 50%; quantity limited by cap,True
+C20,Salbutamol inhalateur (network freeze),collective over-buying,FROZEN 0,FROZEN 0,network freeze: too many pharmacies buying this product,True
